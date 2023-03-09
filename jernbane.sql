@@ -17,9 +17,9 @@ CREATE TABLE Delstrekning (
     startStasjonID int NOT NULL,
     endeStasjonID int NOT NULL,
     avstand int NOT NULL,
-    sportype BOOLEAN NOT NULL, --0 for enkeltspor, 1 for dobbeltspor 
+    sportype BOOLEAN NOT NULL,
     FOREIGN KEY (startStasjonID) REFERENCES Jernbanestasjon(stasjonID),
-    FOREIGN KEY (endeStasjonID) REFERENCES Jernbanestasjon(stasjonID),
+    FOREIGN KEY (endeStasjonID) REFERENCES Jernbanestasjon(stasjonID)
 );
 
 CREATE TABLE DelstrekningPaaBanestrekning (
@@ -35,7 +35,7 @@ CREATE TABLE Togrute (
     togruteID int NOT NULL AUTO_INCREMENT,
     operatorID int NOT NULL,
     vognOppsettID int NOT NULL,
-    hovedretning BOOLEAN NOT NULL, --0 for mot hovedretning, 1 for hovedretning
+    hovedretning BOOLEAN NOT NULL,
     FOREIGN KEY (operatorID) REFERENCES Operator(operatorID),
     FOREIGN KEY (vognOppsettID) REFERENCES Operator(vognOppsettID)
 );
@@ -66,7 +66,7 @@ CREATE TABLE Vogn (
     vognID int NOT NULL AUTO_INCREMENT,
     navn varchar(255) NOT NULL,
     operatorID int NOT NULL,
-    vognType BOOLEAN NOT NULL, --0 for setevogn, 1 for sovevogn
+    vognType BOOLEAN NOT NULL,
     PRIMARY KEY (vognID),
     FOREIGN KEY (operatorID) REFERENCES Operator(operatorID)
 );
@@ -128,5 +128,5 @@ CREATE TABLE Billett (
     FOREIGN KEY (ordrenummer) REFERENCES Kundeordre(ordrenummer),
     FOREIGN KEY (togruteID) REFERENCES Togrute(togruteID),
     FOREIGN KEY (avgangsDato) REFERENCES Togruteforekomst(dato),
-    FOREIGN KEY (vognID) REFERENCES Vogn(vognID),
+    FOREIGN KEY (vognID) REFERENCES Vogn(vognID)
 );
