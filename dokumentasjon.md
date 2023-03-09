@@ -20,6 +20,7 @@
  - Billetter
    - Bruke "plassNr" Regne ut hvilken kupe en billett viser til og avgjøre hvilke kupeer som kan selges til andre kunder.
    - Eventuelt bruke "plassNr" til å regne ut hvilken rad og sete en billett gjelder.
+   - Avgjøre om seter er ledige basert på start-slutt på andre billetter.
 
 ## Forklaring av verdier
 
