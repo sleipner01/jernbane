@@ -1,49 +1,47 @@
 -- SQL
 
 CREATE TABLE Banestrekning (
-    banestrekningID int NOT NULL AUTO_INCREMENT,
-    navn varchar(255) NOT NULL,
-    PRIMARY KEY (banestrekningID)
+    banestrekningID INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    navn varchar(255) NOT NULL
 );
 
 CREATE TABLE Jernbanestasjon (
-    stasjonID int NOT NULL AUTO_INCREMENT,
+    stasjonID INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     navn varchar(255) NOT NULL,
-    moh int NOT NULL,
-    PRIMARY KEY (stasjonID)
+    moh INTEGER NOT NULL
 );
 
 CREATE TABLE Delstrekning (
-    startStasjonID int NOT NULL,
-    endeStasjonID int NOT NULL,
-    avstand int NOT NULL,
+    startStasjonID INTEGER NOT NULL,
+    endeStasjonID INTEGER NOT NULL,
+    avstand INTEGER NOT NULL,
     sportype BOOLEAN NOT NULL,
     FOREIGN KEY (startStasjonID) REFERENCES Jernbanestasjon(stasjonID),
     FOREIGN KEY (endeStasjonID) REFERENCES Jernbanestasjon(stasjonID)
 );
 
 CREATE TABLE DelstrekningPaaBanestrekning (
-    banestrekningID int NOT NULL,
-    startStasjonID int NOT NULL,
-    endeStasjonID int NOT NULL,
+    banestrekningID INTEGER NOT NULL,
+    startStasjonID INTEGER NOT NULL,
+    endeStasjonID INTEGER NOT NULL,
     FOREIGN KEY (banestrekningID) REFERENCES Banestrekning(banestrekningID),
     FOREIGN KEY (startStasjonID) REFERENCES Delstrekning(startStasjonID),
     FOREIGN KEY (endeStasjonID) REFERENCES Delstrekning(endeStasjonID)
 );
 
 CREATE TABLE Togrute (
-    togruteID int NOT NULL AUTO_INCREMENT,
-    operatorID int NOT NULL,
-    vognOppsettID int NOT NULL,
+    togruteID INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    operatorID INTEGER NOT NULL,
+    vognOppsettID INTEGER NOT NULL,
     hovedretning BOOLEAN NOT NULL,
     FOREIGN KEY (operatorID) REFERENCES Operator(operatorID),
     FOREIGN KEY (vognOppsettID) REFERENCES Operator(vognOppsettID)
 );
 
 CREATE TABLE Stoppested (
-    togruteID int NOT NULL,
-    stasjonID int NOT NULL,
-    stoppNummer int NOT NULL,
+    togruteID INTEGER NOT NULL,
+    stasjonID INTEGER NOT NULL,
+    stoppNummer INTEGER NOT NULL,
     ankomstKlokkeslett TIME,
     avgangKlokkeslett TIME,
     FOREIGN KEY (togruteID) REFERENCES Togrute(togruteID),
@@ -51,80 +49,74 @@ CREATE TABLE Stoppested (
 );
 
 CREATE TABLE Togruteforekomst (
-    togruteID int NOT NULL,
+    togruteID INTEGER NOT NULL,
     dato DATE NOT NULL,
     FOREIGN KEY (togruteID) REFERENCES Togrute(togruteID)
 );
 
 CREATE TABLE Operator (
-    operatorID int NOT NULL AUTO_INCREMENT,
-    navn varchar(255) NOT NULL,
-    PRIMARY KEY (operatorID)
+    operatorID INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    navn varchar(255) NOT NULL
 );
 
 CREATE TABLE Vogn (
-    vognID int NOT NULL AUTO_INCREMENT,
+    vognID INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     navn varchar(255) NOT NULL,
-    operatorID int NOT NULL,
-    vognType BOOLEAN NOT NULL,
-    PRIMARY KEY (vognID),
+    operatorID INTEGER NOT NULL,
+    vognType INTEGER NOT NULL,
     FOREIGN KEY (operatorID) REFERENCES Operator(operatorID)
 );
 
 CREATE TABLE SoveVogn (
-    vognID int NOT NULL,
-    antallKupeer int NOT NULL,
-    antallSengerPerKupe int NOT NULL,
+    vognID INTEGER NOT NULL,
+    antallKupeer INTEGER NOT NULL,
+    antallSengerPerKupe INTEGER NOT NULL,
     FOREIGN KEY (vognID) REFERENCES Vogn(vognID)
 );
 
 CREATE TABLE SeteVogn (
-    vognID int NOT NULL,
-    antallRader int NOT NULL,
-    antallSeterPerRad int NOT NULL,
+    vognID INTEGER NOT NULL,
+    antallRader INTEGER NOT NULL,
+    antallSeterPerRad INTEGER NOT NULL,
     FOREIGN KEY (vognID) REFERENCES Vogn(vognID)
 );
 
 CREATE TABLE VognOppsett (
-    vognOppsettID int NOT NULL AUTO_INCREMENT,
-    beskrivelse varchar(255),
-    PRIMARY KEY (vognOppsettID)
+    vognOppsettID INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    beskrivelse varchar(255)
 );
 
 CREATE TABLE VognerPaaVognOppsett (
-    vognOppsettID int NOT NULL,
-    vognID int NOT NULL,
-    rekkefolge int NOT NULL, 
+    vognOppsettID INTEGER NOT NULL,
+    vognID INTEGER NOT NULL,
+    rekkefolge INTEGER NOT NULL, 
     FOREIGN KEY (vognOppsettID) REFERENCES VognOppsett(vognOppsettID),
     FOREIGN KEY (vognID) REFERENCES Vogn(vognID)
 );
 
 CREATE TABLE Kunde (
-    kundeID int NOT NULL AUTO_INCREMENT,
+    kundeID INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     firstName varchar(255) NOT NULL,
     lastName varchar(255) NOT NULL,
     tlfNr varchar(255) NOT NULL,
-    email varchar(255) NOT NULL,
-    PRIMARY KEY (kundeID)
+    email varchar(255) NOT NULL
 );
 
 CREATE TABLE Kundeordre (
-    ordrenummer int NOT NULL AUTO_INCREMENT,
-    kundeID int NOT NULL,
-    tidspunkt TIMESTAMP NOT NULL,
-    PRIMARY KEY (ordrenummer),
+    ordrenummer INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    kundeID INTEGER NOT NULL,
+    tidspunkt datetime NOT NULL,
     FOREIGN KEY (kundeID) REFERENCES Kunde(kundeID)
 );
 
 CREATE TABLE Billett (
-    billettID int NOT NULL  AUTO_INCREMENT,
-    ordrenummer int NOT NULL,
-    togruteID int NOT NULL,
+    billettID INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    ordrenummer INTEGER NOT NULL,
+    togruteID INTEGER NOT NULL,
     avgangsDato DATE NOT NULL,
-    vognID int NOT NULL,
-    radNr int NOT NULL,
-    seteNr int NOT NULL,
-    PRIMARY KEY (billettID),
+    vognID INTEGER NOT NULL,
+    radNr INTEGER NOT NULL,
+    seteNr INTEGER NOT NULL,
     FOREIGN KEY (ordrenummer) REFERENCES Kundeordre(ordrenummer),
     FOREIGN KEY (togruteID) REFERENCES Togrute(togruteID),
     FOREIGN KEY (avgangsDato) REFERENCES Togruteforekomst(dato),
