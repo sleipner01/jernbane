@@ -117,6 +117,8 @@ CREATE TABLE Billett (
     vognID INTEGER NOT NULL,
     radNr INTEGER NOT NULL,
     seteNr INTEGER NOT NULL,
+    startStasjonID INTEGER NOT NULL,
+    endeStasjonID INTEGER NOT NULL,
     FOREIGN KEY (ordrenummer) REFERENCES Kundeordre(ordrenummer),
     FOREIGN KEY (togruteID) REFERENCES Togrute(togruteID),
     FOREIGN KEY (avgangsDato) REFERENCES Togruteforekomst(dato),
