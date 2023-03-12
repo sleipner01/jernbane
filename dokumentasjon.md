@@ -8,9 +8,7 @@
 
  - Hovedretning
    - Delstrekning: startStasjon -> endeStasjon indikerer hovedretningen
-   - Togrute:
-     - 0: Mot hovedretning
-     - 1: Hovedretning  
+
 
  - Delstrekning
    - Det skal ikke være mulig å lagre en banestrekning hvor start- og endestasjon er byttet om. 
@@ -25,13 +23,20 @@
 
 ## Forklaring av verdier
 
- - `sportype`
-   - `BOOLEAN`
-     - 0: Enkeltspor
-     - 1: Dobbeltspor
+ - Delstrekning:
+   - `sportype`
+     - `BOOLEAN`
+       - 0: Enkeltspor
+       - 1: Dobbeltspor
 
+   - Togrute:
+     - `hovedretning`
+       - `BOOLEAN`
+         - 0: Mot hovedretning
+         - 1: Hovedretning  
 
   - Vogn
     - `type`
-      - 0: Setevogn
-      - 1: Sovevogn
+      - `BOOLEAN`
+        - 0: Setevogn
+        - 1: Sovevogn

@@ -99,9 +99,10 @@ CREATE TABLE SoveVogn (
     antallKupeer INTEGER NOT NULL,
     antallSengerPerKupe INTEGER NOT NULL,
     FOREIGN KEY (vognId) REFERENCES Vogn(vognId),
-    CONSTRAINT CHK_antallKupeer (antallKupeer > 0),
-    CONSTRAINT CHK_antallSengerPerKupe (antallSengerPerKupe > 0)
+    CONSTRAINT CHK_antallKupeer CHECK (antallKupeer > 0),
+    CONSTRAINT CHK_antallSengerPerKupe CHECK (antallSengerPerKupe > 0)
 );
+
 
 CREATE TABLE VognOppsett (
     vognOppsettId INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
