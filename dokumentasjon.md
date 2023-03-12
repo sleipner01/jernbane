@@ -8,24 +8,36 @@
 
  - Hovedretning
    - Delstrekning: startStasjon -> endeStasjon indikerer hovedretningen
-   - Togrute:
-     - 0: Mot hovedretning
-     - 1: Hovedretning  
+
+
+ - Delstrekning
+   - Det skal ikke være mulig å lagre en banestrekning hvor start- og endestasjon er byttet om. 
 
  - Billetter
    - Bruke "plassNr" Regne ut hvilken kupe en billett viser til og avgjøre hvilke kupeer som kan selges til andre kunder.
    - Eventuelt bruke "plassNr" til å regne ut hvilken rad og sete en billett gjelder.
    - Avgjøre om seter er ledige basert på start-slutt på andre billetter.
 
+ - VognerPaaVognoppsett
+   - Sjekke at det ikke allerede finnes en annen vogn på samme plass i rekkefølgen.
+   - Sjekke at det finnes en vogn med indeks-1 (en vogn foran den som plasseres)
+
 ## Forklaring av verdier
 
- - `sportype`
-   - `BOOLEAN`
-     - 0: Enkeltspor
-     - 1: Dobbeltspor
+ - Delstrekning:
+   - `sportype`
+     - `BOOLEAN`
+       - 0: Enkeltspor
+       - 1: Dobbeltspor
 
+   - Togrute:
+     - `hovedretning`
+       - `BOOLEAN`
+         - 0: Mot hovedretning
+         - 1: Hovedretning  
 
   - Vogn
     - `type`
-      - 0: Setevogn
-      - 1: Sovevogn
+      - `BOOLEAN`
+        - 0: Setevogn
+        - 1: Sovevogn
