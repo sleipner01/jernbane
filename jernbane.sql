@@ -24,6 +24,7 @@ CREATE TABLE Delstrekning (
     sportype BOOLEAN NOT NULL,
     FOREIGN KEY (startStasjonId) REFERENCES Jernbanestasjon(stasjonId) ON UPDATE CASCADE ON DELETE SET NULL,
     FOREIGN KEY (endeStasjonId) REFERENCES Jernbanestasjon(stasjonId) ON UPDATE CASCADE ON DELETE SET NULL,
+    CONSTRAINT PK_Delstrekning PRIMARY KEY (startStasjonId, endeStasjonId),
     CONSTRAINT CHK_stasjon CHECK (startStasjonId != endeStasjonId),
     CONSTRAINT CHK_avstand CHECK (avstand >= 0)
 );
@@ -34,7 +35,8 @@ CREATE TABLE DelstrekningPaaBanestrekning (
     endeStasjonId INTEGER NOT NULL,
     FOREIGN KEY (banestrekningId) REFERENCES Banestrekning(banestrekningId) ON UPDATE CASCADE ON DELETE SET NULL,
     FOREIGN KEY (startStasjonId) REFERENCES Delstrekning(startStasjonId) ON UPDATE CASCADE ON DELETE SET NULL,
-    FOREIGN KEY (endeStasjonId) REFERENCES Delstrekning(endeStasjonId) ON UPDATE CASCADE ON DELETE SET NULL
+    FOREIGN KEY (endeStasjonId) REFERENCES Delstrekning(endeStasjonId) ON UPDATE CASCADE ON DELETE SET NULL,
+    CONSTRAINT PK_DelstrekningPaaBanestrekning PRIMARY KEY (banestrekningId, startStasjonId, endeStasjonId)
 );
 
 CREATE TABLE Togrute (
@@ -54,7 +56,9 @@ CREATE TABLE TogruteHarDelstrekning (
     endeStasjonId INTEGER NOT NULL,
     FOREIGN KEY (rutenummer) REFERENCES Togrute(rutenummer) ON UPDATE CASCADE ON DELETE SET NULL,
     FOREIGN KEY (startStasjonId) REFERENCES Delstrekning(stasjonId) ON UPDATE CASCADE ON DELETE SET NULL,
-    FOREIGN KEY (endeStasjonId) REFERENCES Delstrekning(stasjonId) ON UPDATE CASCADE ON DELETE SET NULL
+    FOREIGN KEY (endeStasjonId) REFERENCES Delstrekning(stasjonId) ON UPDATE CASCADE ON DELETE SET NULL,
+    CONSTRAINT PK_TogruteHarDelstrekning PRIMARY KEY (rutenummer, startStasjonId, endeStasjonId)
+
 );
 
 CREATE TABLE Stoppested (
@@ -64,13 +68,15 @@ CREATE TABLE Stoppested (
     ankomstTid TIME,
     avgangsTid TIME,
     FOREIGN KEY (rutenummer) REFERENCES Togrute(rutenummer) ON UPDATE CASCADE ON DELETE CASCADE,
-    FOREIGN KEY (stasjonId) REFERENCES Jernbanestasjon(stasjonId) ON UPDATE CASCADE ON DELETE CASCADE
+    FOREIGN KEY (stasjonId) REFERENCES Jernbanestasjon(stasjonId) ON UPDATE CASCADE ON DELETE CASCADE,
+    CONSTRAINT PK_Stoppested PRIMARY KEY (rutenummer, stasjonId)
 );
 
 CREATE TABLE Togruteforekomst (
     rutenummer INTEGER NOT NULL,
     dato DATE NOT NULL,
-    FOREIGN KEY (rutenummer) REFERENCES Togrute(rutenummer) ON UPDATE CASCADE ON DELETE CASCADE
+    FOREIGN KEY (rutenummer) REFERENCES Togrute(rutenummer) ON UPDATE CASCADE ON DELETE CASCADE,
+    CONSTRAINT PK_Togruteforekomst PRIMARY KEY (togruteId, dato)
 );
 
 CREATE TABLE Operator (
@@ -86,7 +92,7 @@ CREATE TABLE Vogn (
 );
 
 CREATE TABLE SitteVogn (
-    vognId INTEGER NOT NULL,
+    vognId INTEGER NOT NULL PRIMARY KEY,
     antallRader INTEGER NOT NULL,
     antallSeterPerRad INTEGER NOT NULL,
     FOREIGN KEY (vognId) REFERENCES Vogn(vognId) ON UPDATE CASCADE ON DELETE CASCADE,
@@ -95,7 +101,7 @@ CREATE TABLE SitteVogn (
 );
 
 CREATE TABLE SoveVogn (
-    vognId INTEGER NOT NULL,
+    vognId INTEGER NOT NULL PRIMARY KEY,
     antallKupeer INTEGER NOT NULL,
     antallSengerPerKupe INTEGER NOT NULL,
     FOREIGN KEY (vognId) REFERENCES Vogn(vognId) ON UPDATE CASCADE ON DELETE CASCADE,
@@ -115,6 +121,7 @@ CREATE TABLE VognerPaaVognOppsett (
     rekkefolge INTEGER NOT NULL, 
     FOREIGN KEY (vognOppsettId) REFERENCES VognOppsett(vognOppsettId) ON UPDATE CASCADE ON DELETE CASCADE,
     FOREIGN KEY (vognId) REFERENCES Vogn(vognId) ON UPDATE CASCADE ON DELETE SET NULL,
+    CONSTRAINT PK_VognerPaaVognOppsett PRIMARY KEY (vognOppsettId, vognId),
     CONSTRAINT CHK_rekkefolge CHECK (rekkefolge > 0)
 );
 
@@ -147,5 +154,6 @@ CREATE TABLE Billett (
     FOREIGN KEY (vognId) REFERENCES Vogn(vognId) ON UPDATE CASCADE ON DELETE SET NULL,
     FOREIGN KEY (startStasjonId) REFERENCES Jernbanestasjon(stasjonId) ON UPDATE CASCADE ON DELETE SET NULL,
     FOREIGN KEY (endeStasjonId) REFERENCES Jernbanestasjon(stasjonId) ON UPDATE CASCADE ON DELETE SET NULL,
+    CONSTRAINT PK_Billett PRIMARY KEY (ordrenummer, rutenummer, avgangsDato, vognId, startStasjonId, endeStasjonId, plassNr),
     CONSTRAINT CHK_plassNR CHECK (plassNr > 0)
 );
