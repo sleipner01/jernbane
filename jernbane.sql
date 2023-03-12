@@ -2,17 +2,18 @@
 
 CREATE TABLE Banestrekning (
     banestrekningId INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-    navn varchar(255) NOT NULL,
-    fremdriftsenergi varchar(255) NOT NULL,
+    navn varchar(60) NOT NULL,
+    fremdriftsenergi varchar(40) NOT NULL,
     startStasjonId INTEGER NOT NULL,
     endeStasjonId INTEGER NOT NULL,
     FOREIGN KEY (startStasjonId) REFERENCES Jernbanestasjon(stasjonId),
-    FOREIGN KEY (endeStasjonId) REFERENCES Jernbanestasjon(stasjonId)
+    FOREIGN KEY (endeStasjonId) REFERENCES Jernbanestasjon(stasjonId),
+    CONSTRAINT CHK_stasjon CHECK (startStasjonId != endeStasjonId)
 );
 
 CREATE TABLE Jernbanestasjon (
     stasjonId INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-    navn varchar(255) NOT NULL,
+    navn varchar(60) NOT NULL,
     moh INTEGER NOT NULL
 );
 
@@ -22,7 +23,9 @@ CREATE TABLE Delstrekning (
     avstand INTEGER NOT NULL,
     sportype BOOLEAN NOT NULL,
     FOREIGN KEY (startStasjonId) REFERENCES Jernbanestasjon(stasjonId),
-    FOREIGN KEY (endeStasjonId) REFERENCES Jernbanestasjon(stasjonId)
+    FOREIGN KEY (endeStasjonId) REFERENCES Jernbanestasjon(stasjonId),
+    CONSTRAINT CHK_stasjon CHECK (startStasjonId != endeStasjonId),
+    CONSTRAINT CHK_avstand CHECK (avstand >= 0)
 );
 
 CREATE TABLE DelstrekningPaaBanestrekning (
@@ -72,13 +75,13 @@ CREATE TABLE Togruteforekomst (
 
 CREATE TABLE Operator (
     operatorId INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-    navn varchar(255) NOT NULL
+    navn varchar(60) NOT NULL
 );
 
 CREATE TABLE Vogn (
     vognId INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     operatorId INTEGER NOT NULL,
-    vognType INTEGER NOT NULL,
+    vognType BOOLEAN NOT NULL,
     FOREIGN KEY (operatorId) REFERENCES Operator(operatorId)
 );
 
@@ -86,14 +89,18 @@ CREATE TABLE SitteVogn (
     vognId INTEGER NOT NULL,
     antallRader INTEGER NOT NULL,
     antallSeterPerRad INTEGER NOT NULL,
-    FOREIGN KEY (vognId) REFERENCES Vogn(vognId)
+    FOREIGN KEY (vognId) REFERENCES Vogn(vognId),
+    CONSTRAINT CHK_antallRader CHECK (antallRader > 0),
+    CONSTRAINT CHK_antallSeterPerRad CHECK (antallSeterPerRad > 0)
 );
 
 CREATE TABLE SoveVogn (
     vognId INTEGER NOT NULL,
     antallKupeer INTEGER NOT NULL,
     antallSengerPerKupe INTEGER NOT NULL,
-    FOREIGN KEY (vognId) REFERENCES Vogn(vognId)
+    FOREIGN KEY (vognId) REFERENCES Vogn(vognId),
+    CONSTRAINT CHK_antallKupeer (antallKupeer > 0),
+    CONSTRAINT CHK_antallSengerPerKupe (antallSengerPerKupe > 0)
 );
 
 CREATE TABLE VognOppsett (
@@ -106,15 +113,16 @@ CREATE TABLE VognerPaaVognOppsett (
     vognId INTEGER NOT NULL,
     rekkefolge INTEGER NOT NULL, 
     FOREIGN KEY (vognOppsettId) REFERENCES VognOppsett(vognOppsettId),
-    FOREIGN KEY (vognId) REFERENCES Vogn(vognId)
+    FOREIGN KEY (vognId) REFERENCES Vogn(vognId),
+    CONSTRAINT CHK_rekkefolge CHECK (rekkefolge > 0)
 );
 
 CREATE TABLE Kunde (
     kundenummer INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-    fornavn varchar(255) NOT NULL,
-    etternavn varchar(255) NOT NULL,
-    email varchar(255) NOT NULL,
-    tlfNr varchar(255) NOT NULL
+    fornavn varchar(60) NOT NULL,
+    etternavn varchar(60) NOT NULL,
+    email varchar(60) NOT NULL,
+    tlfNr varchar(20) NOT NULL
 );
 
 CREATE TABLE Kundeordre (
@@ -138,4 +146,5 @@ CREATE TABLE Billett (
     FOREIGN KEY (vognId) REFERENCES Vogn(vognId),
     FOREIGN KEY (startStasjonId) REFERENCES Jernbanestasjon(stasjonId),
     FOREIGN KEY (endeStasjonId) REFERENCES Jernbanestasjon(stasjonId)
+    CONSTRAINT CHK_plassNR CHECK (plassNr > 0)
 );
