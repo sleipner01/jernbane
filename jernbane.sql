@@ -76,7 +76,7 @@ CREATE TABLE Togruteforekomst (
     rutenummer INTEGER NOT NULL,
     dato DATE NOT NULL,
     FOREIGN KEY (rutenummer) REFERENCES Togrute(rutenummer) ON UPDATE CASCADE ON DELETE CASCADE,
-    CONSTRAINT PK_Togruteforekomst PRIMARY KEY (togruteId, dato)
+    CONSTRAINT PK_Togruteforekomst PRIMARY KEY (rutenummer, dato)
 );
 
 CREATE TABLE Operator (
