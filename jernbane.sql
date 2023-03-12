@@ -21,6 +21,7 @@ CREATE TABLE Delstrekning (
     endeStasjonId INTEGER NOT NULL,
     avstand INTEGER NOT NULL,
     sportype BOOLEAN NOT NULL,
+    CONSTRAINT PK_Delstrekning PRIMARY KEY (startStasjonId, endeStasjonId),
     FOREIGN KEY (startStasjonId) REFERENCES Jernbanestasjon(stasjonId),
     FOREIGN KEY (endeStasjonId) REFERENCES Jernbanestasjon(stasjonId)
 );
@@ -29,6 +30,7 @@ CREATE TABLE DelstrekningPaaBanestrekning (
     banestrekningId INTEGER NOT NULL,
     startStasjonId INTEGER NOT NULL,
     endeStasjonId INTEGER NOT NULL,
+    CONSTRAINT PK_DelstrekningPaaBanestrekning PRIMARY KEY (banestrekningId, startStasjonId, endeStasjonId),
     FOREIGN KEY (banestrekningId) REFERENCES Banestrekning(banestrekningId),
     FOREIGN KEY (startStasjonId) REFERENCES Delstrekning(startStasjonId),
     FOREIGN KEY (endeStasjonId) REFERENCES Delstrekning(endeStasjonId)
@@ -49,6 +51,7 @@ CREATE TABLE TogruteHarDelstrekning (
     rutenummer INTEGER NOT NULL,
     startStasjonId INTEGER NOT NULL,
     endeStasjonId INTEGER NOT NULL,
+    CONSTRAINT PK_TogruteHarDelstrekning PRIMARY KEY (rutenummer, startStasjonId, endeStasjonId),
     FOREIGN KEY (rutenummer) REFERENCES Togrute(rutenummer),
     FOREIGN KEY (startStasjonId) REFERENCES Delstrekning(stasjonId),
     FOREIGN KEY (endeStasjonId) REFERENCES Delstrekning(stasjonId)
@@ -60,6 +63,7 @@ CREATE TABLE Stoppested (
     stoppNummer INTEGER NOT NULL,
     ankomstTid TIME,
     avgangsTid TIME,
+    CONSTRAINT PK_Stoppested PRIMARY KEY (rutenummer, stasjonId),
     FOREIGN KEY (rutenummer) REFERENCES Togrute(rutenummer),
     FOREIGN KEY (stasjonId) REFERENCES Jernbanestasjon(stasjonId)
 );
@@ -67,6 +71,7 @@ CREATE TABLE Stoppested (
 CREATE TABLE Togruteforekomst (
     togruteId INTEGER NOT NULL,
     dato DATE NOT NULL,
+    CONSTRAINT PK_Togruteforekomst PRIMARY KEY (togruteId, dato),
     FOREIGN KEY (togruteId) REFERENCES Togrute(togruteId)
 );
 
@@ -83,14 +88,14 @@ CREATE TABLE Vogn (
 );
 
 CREATE TABLE SitteVogn (
-    vognId INTEGER NOT NULL,
+    vognId INTEGER NOT NULL PRIMARY KEY,
     antallRader INTEGER NOT NULL,
     antallSeterPerRad INTEGER NOT NULL,
     FOREIGN KEY (vognId) REFERENCES Vogn(vognId)
 );
 
 CREATE TABLE SoveVogn (
-    vognId INTEGER NOT NULL,
+    vognId INTEGER NOT NULL PRIMARY KEY,
     antallKupeer INTEGER NOT NULL,
     antallSengerPerKupe INTEGER NOT NULL,
     FOREIGN KEY (vognId) REFERENCES Vogn(vognId)
@@ -105,6 +110,7 @@ CREATE TABLE VognerPaaVognOppsett (
     vognOppsettId INTEGER NOT NULL,
     vognId INTEGER NOT NULL,
     rekkefolge INTEGER NOT NULL, 
+    CONSTRAINT PK_VognerPaaVognOppsett PRIMARY KEY (vognOppsettId, vognId),
     FOREIGN KEY (vognOppsettId) REFERENCES VognOppsett(vognOppsettId),
     FOREIGN KEY (vognId) REFERENCES Vogn(vognId)
 );
@@ -132,6 +138,7 @@ CREATE TABLE Billett (
     startStasjonId INTEGER NOT NULL,
     endeStasjonId INTEGER NOT NULL,
     plassNr INTEGER NOT NULL,
+    CONSTRAINT PK_Billett PRIMARY KEY (ordrenummer, rutenummer, avgangsDato, vognId, startStasjonId, endeStasjonId, plassNr),
     FOREIGN KEY (ordrenummer) REFERENCES Kundeordre(ordrenummer),
     FOREIGN KEY (rutenummer) REFERENCES Togrute(rutenummer),
     FOREIGN KEY (avgangsDato) REFERENCES Togruteforekomst(dato),
