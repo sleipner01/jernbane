@@ -6,8 +6,8 @@ CREATE TABLE Banestrekning (
     fremdriftsenergi varchar(40) NOT NULL,
     startStasjonId INTEGER NOT NULL,
     endeStasjonId INTEGER NOT NULL,
-    FOREIGN KEY (startStasjonId) REFERENCES Jernbanestasjon(stasjonId),
-    FOREIGN KEY (endeStasjonId) REFERENCES Jernbanestasjon(stasjonId),
+    FOREIGN KEY (startStasjonId) REFERENCES Jernbanestasjon(stasjonId) ON UPDATE CASCADE ON DELETE SET NULL,
+    FOREIGN KEY (endeStasjonId) REFERENCES Jernbanestasjon(stasjonId) ON UPDATE CASCADE ON DELETE SET NULL,
     CONSTRAINT CHK_stasjon CHECK (startStasjonId != endeStasjonId)
 );
 
@@ -22,8 +22,8 @@ CREATE TABLE Delstrekning (
     endeStasjonId INTEGER NOT NULL,
     avstand INTEGER NOT NULL,
     sportype BOOLEAN NOT NULL,
-    FOREIGN KEY (startStasjonId) REFERENCES Jernbanestasjon(stasjonId),
-    FOREIGN KEY (endeStasjonId) REFERENCES Jernbanestasjon(stasjonId),
+    FOREIGN KEY (startStasjonId) REFERENCES Jernbanestasjon(stasjonId) ON UPDATE CASCADE ON DELETE SET NULL,
+    FOREIGN KEY (endeStasjonId) REFERENCES Jernbanestasjon(stasjonId) ON UPDATE CASCADE ON DELETE SET NULL,
     CONSTRAINT CHK_stasjon CHECK (startStasjonId != endeStasjonId),
     CONSTRAINT CHK_avstand CHECK (avstand >= 0)
 );
@@ -32,9 +32,9 @@ CREATE TABLE DelstrekningPaaBanestrekning (
     banestrekningId INTEGER NOT NULL,
     startStasjonId INTEGER NOT NULL,
     endeStasjonId INTEGER NOT NULL,
-    FOREIGN KEY (banestrekningId) REFERENCES Banestrekning(banestrekningId),
-    FOREIGN KEY (startStasjonId) REFERENCES Delstrekning(startStasjonId),
-    FOREIGN KEY (endeStasjonId) REFERENCES Delstrekning(endeStasjonId)
+    FOREIGN KEY (banestrekningId) REFERENCES Banestrekning(banestrekningId) ON UPDATE CASCADE ON DELETE SET NULL,
+    FOREIGN KEY (startStasjonId) REFERENCES Delstrekning(startStasjonId) ON UPDATE CASCADE ON DELETE SET NULL,
+    FOREIGN KEY (endeStasjonId) REFERENCES Delstrekning(endeStasjonId) ON UPDATE CASCADE ON DELETE SET NULL
 );
 
 CREATE TABLE Togrute (
@@ -43,18 +43,18 @@ CREATE TABLE Togrute (
     vognOppsettId INTEGER NOT NULL,
     banestrekningId INTEGER NOT NULL,
     hovedretning BOOLEAN NOT NULL,
-    FOREIGN KEY (operatorId) REFERENCES Operator(operatorId),
-    FOREIGN KEY (vognOppsettId) REFERENCES Operator(vognOppsettId),
-    FOREIGN KEY (banestrekningId) REFERENCES Banestrekning(banestrekningId)
+    FOREIGN KEY (operatorId) REFERENCES Operator(operatorId) ON UPDATE CASCADE ON DELETE SET NULL,
+    FOREIGN KEY (vognOppsettId) REFERENCES Operator(vognOppsettId) ON UPDATE CASCADE ON DELETE SET NULL,
+    FOREIGN KEY (banestrekningId) REFERENCES Banestrekning(banestrekningId) ON UPDATE CASCADE ON DELETE SET NULL
 );
 
 CREATE TABLE TogruteHarDelstrekning (
     rutenummer INTEGER NOT NULL,
     startStasjonId INTEGER NOT NULL,
     endeStasjonId INTEGER NOT NULL,
-    FOREIGN KEY (rutenummer) REFERENCES Togrute(rutenummer),
-    FOREIGN KEY (startStasjonId) REFERENCES Delstrekning(stasjonId),
-    FOREIGN KEY (endeStasjonId) REFERENCES Delstrekning(stasjonId)
+    FOREIGN KEY (rutenummer) REFERENCES Togrute(rutenummer) ON UPDATE CASCADE ON DELETE SET NULL,
+    FOREIGN KEY (startStasjonId) REFERENCES Delstrekning(stasjonId) ON UPDATE CASCADE ON DELETE SET NULL,
+    FOREIGN KEY (endeStasjonId) REFERENCES Delstrekning(stasjonId) ON UPDATE CASCADE ON DELETE SET NULL
 );
 
 CREATE TABLE Stoppested (
@@ -63,14 +63,14 @@ CREATE TABLE Stoppested (
     stoppNummer INTEGER NOT NULL,
     ankomstTid TIME,
     avgangsTid TIME,
-    FOREIGN KEY (rutenummer) REFERENCES Togrute(rutenummer),
-    FOREIGN KEY (stasjonId) REFERENCES Jernbanestasjon(stasjonId)
+    FOREIGN KEY (rutenummer) REFERENCES Togrute(rutenummer) ON UPDATE CASCADE ON DELETE CASCADE,
+    FOREIGN KEY (stasjonId) REFERENCES Jernbanestasjon(stasjonId) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 CREATE TABLE Togruteforekomst (
-    togruteId INTEGER NOT NULL,
+    rutenummer INTEGER NOT NULL,
     dato DATE NOT NULL,
-    FOREIGN KEY (togruteId) REFERENCES Togrute(togruteId)
+    FOREIGN KEY (rutenummer) REFERENCES Togrute(rutenummer) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 CREATE TABLE Operator (
@@ -82,14 +82,14 @@ CREATE TABLE Vogn (
     vognId INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     operatorId INTEGER NOT NULL,
     vognType BOOLEAN NOT NULL,
-    FOREIGN KEY (operatorId) REFERENCES Operator(operatorId)
+    FOREIGN KEY (operatorId) REFERENCES Operator(operatorId) ON UPDATE CASCADE ON DELETE SET NULL
 );
 
 CREATE TABLE SitteVogn (
     vognId INTEGER NOT NULL,
     antallRader INTEGER NOT NULL,
     antallSeterPerRad INTEGER NOT NULL,
-    FOREIGN KEY (vognId) REFERENCES Vogn(vognId),
+    FOREIGN KEY (vognId) REFERENCES Vogn(vognId) ON UPDATE CASCADE ON DELETE CASCADE,
     CONSTRAINT CHK_antallRader CHECK (antallRader > 0),
     CONSTRAINT CHK_antallSeterPerRad CHECK (antallSeterPerRad > 0)
 );
@@ -98,7 +98,7 @@ CREATE TABLE SoveVogn (
     vognId INTEGER NOT NULL,
     antallKupeer INTEGER NOT NULL,
     antallSengerPerKupe INTEGER NOT NULL,
-    FOREIGN KEY (vognId) REFERENCES Vogn(vognId),
+    FOREIGN KEY (vognId) REFERENCES Vogn(vognId) ON UPDATE CASCADE ON DELETE CASCADE,
     CONSTRAINT CHK_antallKupeer CHECK (antallKupeer > 0),
     CONSTRAINT CHK_antallSengerPerKupe CHECK (antallSengerPerKupe > 0)
 );
@@ -113,8 +113,8 @@ CREATE TABLE VognerPaaVognOppsett (
     vognOppsettId INTEGER NOT NULL,
     vognId INTEGER NOT NULL,
     rekkefolge INTEGER NOT NULL, 
-    FOREIGN KEY (vognOppsettId) REFERENCES VognOppsett(vognOppsettId),
-    FOREIGN KEY (vognId) REFERENCES Vogn(vognId),
+    FOREIGN KEY (vognOppsettId) REFERENCES VognOppsett(vognOppsettId) ON UPDATE CASCADE ON DELETE CASCADE,
+    FOREIGN KEY (vognId) REFERENCES Vogn(vognId) ON UPDATE CASCADE ON DELETE SET NULL,
     CONSTRAINT CHK_rekkefolge CHECK (rekkefolge > 0)
 );
 
@@ -130,7 +130,7 @@ CREATE TABLE Kundeordre (
     ordrenummer INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     kundeId INTEGER NOT NULL,
     tidspunkt datetime NOT NULL,
-    FOREIGN KEY (kundeId) REFERENCES Kunde(kundeId)
+    FOREIGN KEY (kundeId) REFERENCES Kunde(kundeId) ON UPDATE CASCADE ON DELETE SET NULL
 );
 
 CREATE TABLE Billett (
@@ -141,11 +141,11 @@ CREATE TABLE Billett (
     startStasjonId INTEGER NOT NULL,
     endeStasjonId INTEGER NOT NULL,
     plassNr INTEGER NOT NULL,
-    FOREIGN KEY (ordrenummer) REFERENCES Kundeordre(ordrenummer),
-    FOREIGN KEY (rutenummer) REFERENCES Togrute(rutenummer),
-    FOREIGN KEY (avgangsDato) REFERENCES Togruteforekomst(dato),
-    FOREIGN KEY (vognId) REFERENCES Vogn(vognId),
-    FOREIGN KEY (startStasjonId) REFERENCES Jernbanestasjon(stasjonId),
-    FOREIGN KEY (endeStasjonId) REFERENCES Jernbanestasjon(stasjonId)
+    FOREIGN KEY (ordrenummer) REFERENCES Kundeordre(ordrenummer) ON UPDATE CASCADE ON DELETE CASCADE,
+    FOREIGN KEY (rutenummer) REFERENCES Togrute(rutenummer) ON UPDATE CASCADE ON DELETE SET NULL,
+    FOREIGN KEY (rutenummer, avgangsDato) REFERENCES Togruteforekomst(rutenummer, dato) ON UPDATE CASCADE ON DELETE SET NULL,
+    FOREIGN KEY (vognId) REFERENCES Vogn(vognId) ON UPDATE CASCADE ON DELETE SET NULL,
+    FOREIGN KEY (startStasjonId) REFERENCES Jernbanestasjon(stasjonId) ON UPDATE CASCADE ON DELETE SET NULL,
+    FOREIGN KEY (endeStasjonId) REFERENCES Jernbanestasjon(stasjonId) ON UPDATE CASCADE ON DELETE SET NULL,
     CONSTRAINT CHK_plassNR CHECK (plassNr > 0)
 );

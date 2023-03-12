@@ -20,6 +20,7 @@
 
  - VognerPaaVognoppsett
    - Sjekke at det ikke allerede finnes en annen vogn på samme plass i rekkefølgen.
+   - Sjekke at det finnes en vogn med indeks-1 (en vogn foran den som plasseres)
 
 ## Forklaring av verdier
 
