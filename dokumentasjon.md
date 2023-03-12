@@ -17,6 +17,7 @@
    - Bruke "plassNr" Regne ut hvilken kupe en billett viser til og avgjøre hvilke kupeer som kan selges til andre kunder.
    - Eventuelt bruke "plassNr" til å regne ut hvilken rad og sete en billett gjelder.
    - Avgjøre om seter er ledige basert på start-slutt på andre billetter.
+   - Databaseen tillater å kjøpe billetter som overlapper andre billetter. Enten man kjøper billetter som overlapper fullstendig, eller har start- eller endestasjon i som er et stopp mellom en annen billett for setet. Dette er en restriksjon som må programmeres.
 
  - VognerPaaVognoppsett
    - Sjekke at det ikke allerede finnes en annen vogn på samme plass i rekkefølgen.
