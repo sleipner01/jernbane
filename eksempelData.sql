@@ -1,17 +1,17 @@
 -- Jernbanestasjoner
-INSERT INTO Jernbanestasjon (stasjonId, navn, moh) VALUES (1, 'Bodø', 4.1);
-INSERT INTO Jernbanestasjon (stasjonId, navn, moh) VALUES (2, 'Fauske', 34.0);
-INSERT INTO Jernbanestasjon (stasjonId, navn, moh) VALUES (3, 'Mo i Rana', 3.5);
-INSERT INTO Jernbanestasjon (stasjonId, navn, moh) VALUES (4, 'Mosjøen', 6.8);
-INSERT INTO Jernbanestasjon (stasjonId, navn, moh) VALUES (5, 'Steinkjær', 3.6);
-INSERT INTO Jernbanestasjon (stasjonId, navn, moh) VALUES (6, 'Trondheim', 5.1);
+INSERT INTO Jernbanestasjon (stasjonId, navn, moh) VALUES (1, 'Trondheim', 5.1);
+INSERT INTO Jernbanestasjon (stasjonId, navn, moh) VALUES (2, 'Steinkjær', 3.6);
+INSERT INTO Jernbanestasjon (stasjonId, navn, moh) VALUES (3, 'Mosjøen', 6.8);
+INSERT INTO Jernbanestasjon (stasjonId, navn, moh) VALUES (4, 'Mo i Rana', 3.5);
+INSERT INTO Jernbanestasjon (stasjonId, navn, moh) VALUES (5, 'Fauske', 34.0);
+INSERT INTO Jernbanestasjon (stasjonId, navn, moh) VALUES (6, 'Bodø', 4.1);
 
 -- Delstrekninger
-INSERT INTO Delstrekning (startStasjonId, endeStasjonId, avstand, sportype) VALUES (1, 2, 60, 0);
-INSERT INTO Delstrekning (startStasjonId, endeStasjonId, avstand, sportype) VALUES (2, 3, 170, 0);
+INSERT INTO Delstrekning (startStasjonId, endeStasjonId, avstand, sportype) VALUES (1, 2, 120, 1);
+INSERT INTO Delstrekning (startStasjonId, endeStasjonId, avstand, sportype) VALUES (2, 3, 280, 0);
 INSERT INTO Delstrekning (startStasjonId, endeStasjonId, avstand, sportype) VALUES (3, 4, 90, 0);
-INSERT INTO Delstrekning (startStasjonId, endeStasjonId, avstand, sportype) VALUES (4, 5, 280, 0);
-INSERT INTO Delstrekning (startStasjonId, endeStasjonId, avstand, sportype) VALUES (5, 6, 120, 1);
+INSERT INTO Delstrekning (startStasjonId, endeStasjonId, avstand, sportype) VALUES (4, 5, 170, 0);
+INSERT INTO Delstrekning (startStasjonId, endeStasjonId, avstand, sportype) VALUES (5, 6, 60, 0);
 
 -- Banestrekninger
 INSERT INTO Banestrekning (banestrekningId, navn, fremdriftsenergi, startStasjonId, endeStasjonId) VALUES (1, 'Nordlandsbanen', 'Diesel', 1, 2);
