@@ -45,7 +45,7 @@ CREATE TABLE Togrute (
     banestrekningId INTEGER NOT NULL,
     hovedretning BOOLEAN NOT NULL,
     FOREIGN KEY (operatorId) REFERENCES Operator(operatorId) ON UPDATE CASCADE ON DELETE SET NULL,
-    FOREIGN KEY (vognOppsettId) REFERENCES Operator(vognOppsettId) ON UPDATE CASCADE ON DELETE SET NULL,
+    FOREIGN KEY (vognOppsettId) REFERENCES VognOppsett(vognOppsettId) ON UPDATE CASCADE ON DELETE SET NULL,
     FOREIGN KEY (banestrekningId) REFERENCES Banestrekning(banestrekningId) ON UPDATE CASCADE ON DELETE SET NULL
 );
 
