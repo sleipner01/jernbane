@@ -66,25 +66,25 @@ INSERT INTO Togrute (rutenummer, operatorId, vognOppsettId, banestrekningId, hov
 
 
 -- Togruteforekomst
-INSERT INTO Togruteforekomst (rutenummer, dato) VALUES (1, '2023-03-20'); -- Mandag
-INSERT INTO Togruteforekomst (rutenummer, dato) VALUES (1, '2023-03-21'); -- Tirsdag
-INSERT INTO Togruteforekomst (rutenummer, dato) VALUES (1, '2023-03-22'); -- Onsdag
-INSERT INTO Togruteforekomst (rutenummer, dato) VALUES (1, '2023-03-23'); -- Torsdag
-INSERT INTO Togruteforekomst (rutenummer, dato) VALUES (1, '2023-03-24'); -- Fredag
+INSERT INTO Togruteforekomst (rutenummer, dato) VALUES (1, '2023-04-03'); -- Mandag
+INSERT INTO Togruteforekomst (rutenummer, dato) VALUES (1, '2023-04-04'); -- Tirsdag
+INSERT INTO Togruteforekomst (rutenummer, dato) VALUES (1, '2023-04-05'); -- Onsdag
+INSERT INTO Togruteforekomst (rutenummer, dato) VALUES (1, '2023-04-06'); -- Torsdag
+INSERT INTO Togruteforekomst (rutenummer, dato) VALUES (1, '2023-04-07'); -- Fredag
 
-INSERT INTO Togruteforekomst (rutenummer, dato) VALUES (2, '2023-03-20'); -- Mandag 
-INSERT INTO Togruteforekomst (rutenummer, dato) VALUES (2, '2023-03-21'); -- Tirsdag
-INSERT INTO Togruteforekomst (rutenummer, dato) VALUES (2, '2023-03-22'); -- Onsdag
-INSERT INTO Togruteforekomst (rutenummer, dato) VALUES (2, '2023-03-23'); -- Torsdag 
-INSERT INTO Togruteforekomst (rutenummer, dato) VALUES (2, '2023-03-24'); -- Fredag 
-INSERT INTO Togruteforekomst (rutenummer, dato) VALUES (2, '2023-03-25'); -- Lørdag 
-INSERT INTO Togruteforekomst (rutenummer, dato) VALUES (2, '2023-03-26'); -- Søndag
+INSERT INTO Togruteforekomst (rutenummer, dato) VALUES (2, '2023-04-03'); -- Mandag 
+INSERT INTO Togruteforekomst (rutenummer, dato) VALUES (2, '2023-04-04'); -- Tirsdag
+INSERT INTO Togruteforekomst (rutenummer, dato) VALUES (2, '2023-04-05'); -- Onsdag
+INSERT INTO Togruteforekomst (rutenummer, dato) VALUES (2, '2023-04-06'); -- Torsdag 
+INSERT INTO Togruteforekomst (rutenummer, dato) VALUES (2, '2023-04-07'); -- Fredag 
+INSERT INTO Togruteforekomst (rutenummer, dato) VALUES (2, '2023-04-08'); -- Lørdag 
+INSERT INTO Togruteforekomst (rutenummer, dato) VALUES (2, '2023-04-09'); -- Søndag
 
-INSERT INTO Togruteforekomst (rutenummer, dato) VALUES (3, '2023-03-20'); -- Mandag
-INSERT INTO Togruteforekomst (rutenummer, dato) VALUES (3, '2023-03-21'); -- Tirsdag
-INSERT INTO Togruteforekomst (rutenummer, dato) VALUES (3, '2023-03-22'); -- Onsdag
-INSERT INTO Togruteforekomst (rutenummer, dato) VALUES (3, '2023-03-23'); -- Torsdag
-INSERT INTO Togruteforekomst (rutenummer, dato) VALUES (3, '2023-03-24'); -- Fredag
+INSERT INTO Togruteforekomst (rutenummer, dato) VALUES (3, '2023-04-03'); -- Mandag
+INSERT INTO Togruteforekomst (rutenummer, dato) VALUES (3, '2023-04-04'); -- Tirsdag
+INSERT INTO Togruteforekomst (rutenummer, dato) VALUES (3, '2023-04-05'); -- Onsdag
+INSERT INTO Togruteforekomst (rutenummer, dato) VALUES (3, '2023-04-06'); -- Torsdag
+INSERT INTO Togruteforekomst (rutenummer, dato) VALUES (3, '2023-04-07'); -- Fredag
 
 
 -- TogruteHarDelstrekning
