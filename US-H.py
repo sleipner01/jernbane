@@ -62,7 +62,7 @@ def printData(dict):
             \rRutenummer: %s
             \r---------------------------------
             \rVogn-rekkefølge: %3s  PlassNr: %2s
-            
+
         """ %(ticket["avgangsDato"], ticket["startStasjon"], ticket["sluttStasjon"], ticket["avreise"], ticket["ankomst"], ticket["rutenummer"], ticket["Vogn-rekkefølge"], ticket["plassNr"]))
         
 def getUsers():
@@ -97,6 +97,11 @@ def main():
         res = input("Skriv inn ditt kundenummer for å se dine fremtidige reiser: ")
         if res == "q":
             break
+        try:
+            res = int(res)
+        except:
+            print("Ugyldig input, skriv inn et gyldig tall\n")
+            continue
         else:
             data = getTickets(res)
             dict = dataToDict(data)
