@@ -11,5 +11,6 @@ def runFile(filename):
     db.close()
 
 
+# runFile('jernbane.sql') for å lage databasen
 runFile('eksempelData.sql')
 
