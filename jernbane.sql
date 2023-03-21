@@ -54,8 +54,7 @@ CREATE TABLE TogruteHarDelstrekning (
     startStasjonId INTEGER NOT NULL,
     endeStasjonId INTEGER NOT NULL,
     FOREIGN KEY (rutenummer) REFERENCES Togrute(rutenummer) ON UPDATE CASCADE ON DELETE SET NULL,
-    FOREIGN KEY (startStasjonId) REFERENCES Delstrekning(stasjonId) ON UPDATE CASCADE ON DELETE SET NULL,
-    FOREIGN KEY (endeStasjonId) REFERENCES Delstrekning(stasjonId) ON UPDATE CASCADE ON DELETE SET NULL,
+    FOREIGN KEY (startStasjonId, endeStasjonId) REFERENCES Delstrekning(startStasjonId, endeStasjonId) ON UPDATE CASCADE ON DELETE SET NULL,
     CONSTRAINT PK_TogruteHarDelstrekning PRIMARY KEY (rutenummer, startStasjonId, endeStasjonId)
 
 );
