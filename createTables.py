@@ -212,5 +212,4 @@ def createAllTables():
 def main():
     createAllTables()
 
-
-main()
+# main()

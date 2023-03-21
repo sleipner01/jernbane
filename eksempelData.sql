@@ -39,10 +39,12 @@ INSERT INTO Vogn (vognId, operatorId, vognType) VALUES (5, 1, 1); -- Sovevogn-1
 
 -- Sittevogn
 INSERT INTO Sittevogn (vognId, antallRader, antallSeterPerRad) VALUES (1, 3, 4);
-INSERT INTO Sittevogn (vognId, antallRader, antallSeterPerRad) VALUES (1, 3, 4);
+INSERT INTO Sittevogn (vognId, antallRader, antallSeterPerRad) VALUES (2, 3, 4);
+INSERT INTO Sittevogn (vognId, antallRader, antallSeterPerRad) VALUES (3, 3, 4);
+INSERT INTO Sittevogn (vognId, antallRader, antallSeterPerRad) VALUES (4, 3, 4);
 
 -- Sovevogn
-INSERT INTO Sovevogn (vognId, antallKupeer, antallSengerPerKupe) VALUES (2, 4, 2);
+INSERT INTO Sovevogn (vognId, antallKupeer, antallSengerPerKupe) VALUES (5, 4, 2);
 
 -- Vognoppsett
 INSERT INTO Vognoppsett (vognOppsettId, beskrivelse) VALUES (1, 'To sittevogner');

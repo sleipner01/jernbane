@@ -1,6 +1,6 @@
 import sqlite3;
 
-con = sqlite3.connect('testJern.db')
+con = sqlite3.connect('jernbanen.db')
 
 def getTrainsPerDayPerStation(date, station):
     cur = con.cursor()
@@ -14,4 +14,4 @@ def getTrainsPerDayPerStation(date, station):
     return res.fetchone()
 
 
-getTrainsPerDayPerStation("Trondheim", "2023-03-21")
+print(getTrainsPerDayPerStation("Trondheim", "2023-03-21"))
