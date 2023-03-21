@@ -28,7 +28,7 @@ INSERT INTO DelstrekningPaaBanestrekning (banestrekningId, startStasjonId, endeS
 
 
 -- Operator
-INSERT INTO Operator (operatorId, navn) VALUES (1, 'Vy');
+INSERT INTO Operator (operatorId, navn) VALUES (1, 'SJ');
 
 -- Vogn
 INSERT INTO Vogn (vognId, operatorId, vognType) VALUES (1, 1, 0); -- Sittevogn-1
@@ -48,16 +48,19 @@ INSERT INTO Sovevogn (vognId, antallKupeer, antallSengerPerKupe) VALUES (5, 4, 2
 
 -- Vognoppsett
 INSERT INTO Vognoppsett (vognOppsettId, beskrivelse) VALUES (1, 'To sittevogner');
+INSERT INTO Vognoppsett (vognOppsettId, beskrivelse) VALUES (2, 'En sittevogn og en sovevogn');
+INSERT INTO Vognoppsett (vognOppsettId, beskrivelse) VALUES (3, 'En sittevogn');
+
 
 -- VognerPaaVognoppsett
 -- Dagtog Trondheim - Bodø
 INSERT INTO VognerPaaVognoppsett (vognOppsettId, vognId, rekkefolge) VALUES (1, 1, 1); -- Sittevogn-1
 INSERT INTO VognerPaaVognoppsett (vognOppsettId, vognId, rekkefolge) VALUES (1, 2, 2); -- Sittevogn-2
 -- Nattog Trondheim - Bodø
-INSERT INTO VognerPaaVognoppsett (vognOppsettId, vognId, rekkefolge) VALUES (1, 3, 1); -- Sittevogn-3
-INSERT INTO VognerPaaVognoppsett (vognOppsettId, vognId, rekkefolge) VALUES (1, 4, 2); -- Sovevogn-1
+INSERT INTO VognerPaaVognoppsett (vognOppsettId, vognId, rekkefolge) VALUES (2, 3, 1); -- Sittevogn-3
+INSERT INTO VognerPaaVognoppsett (vognOppsettId, vognId, rekkefolge) VALUES (2, 4, 2); -- Sovevogn-1
 -- Morgentog Mo i Rana til Trondheim
-INSERT INTO VognerPaaVognoppsett (vognOppsettId, vognId, rekkefolge) VALUES (1, 1, 1); -- Sittevogn-4
+INSERT INTO VognerPaaVognoppsett (vognOppsettId, vognId, rekkefolge) VALUES (3, 1, 1); -- Sittevogn-4
 
 
 
@@ -107,24 +110,24 @@ INSERT INTO TogruteHarDelstrekning (rutenummer, startStasjonId, endeStasjonId) V
 INSERT INTO TogruteHarDelstrekning (rutenummer, startStasjonId, endeStasjonId) VALUES (3, 3, 4); -- Morgentog Mo i Rana - Trondheim
 
 -- Stoppested
-INSERT INTO Stoppested (rutenummer, stasjonId, stoppNummer, ankomstTid, avgangTid) VALUES (1, 1, 1, null, '07:59'); -- Dagtog Trondheim - Bodø | Trondheim
-INSERT INTO Stoppested (rutenummer, stasjonId, stoppNummer, ankomstTid, avgangTid) VALUES (1, 2, 2, '09:58', '09:59'); -- Dagtog Trondheim - Bodø | Steinkjær
-INSERT INTO Stoppested (rutenummer, stasjonId, stoppNummer, ankomstTid, avgangTid) VALUES (1, 3, 3, '13:19', '13:20'); -- Dagtog Trondheim - Bodø | Mosjøen
-INSERT INTO Stoppested (rutenummer, stasjonId, stoppNummer, ankomstTid, avgangTid) VALUES (1, 4, 4, '14:30', '14:31'); -- Dagtog Trondheim - Bodø | Mo i Rana
-INSERT INTO Stoppested (rutenummer, stasjonId, stoppNummer, ankomstTid, avgangTid) VALUES (1, 5, 5, '16:48', '16:49'); -- Dagtog Trondheim - Bodø | Fauske
-INSERT INTO Stoppested (rutenummer, stasjonId, stoppNummer, ankomstTid, avgangTid) VALUES (1, 6, 6, '17:34', null); -- Dagtog Trondheim - Bodø | Bodø
+INSERT INTO Stoppested (rutenummer, stasjonId, stoppNummer, ankomstTid, avgangsTid) VALUES (1, 1, 1, null, '07:59'); -- Dagtog Trondheim - Bodø | Trondheim
+INSERT INTO Stoppested (rutenummer, stasjonId, stoppNummer, ankomstTid, avgangsTid) VALUES (1, 2, 2, '09:58', '09:59'); -- Dagtog Trondheim - Bodø | Steinkjær
+INSERT INTO Stoppested (rutenummer, stasjonId, stoppNummer, ankomstTid, avgangsTid) VALUES (1, 3, 3, '13:19', '13:20'); -- Dagtog Trondheim - Bodø | Mosjøen
+INSERT INTO Stoppested (rutenummer, stasjonId, stoppNummer, ankomstTid, avgangsTid) VALUES (1, 4, 4, '14:30', '14:31'); -- Dagtog Trondheim - Bodø | Mo i Rana
+INSERT INTO Stoppested (rutenummer, stasjonId, stoppNummer, ankomstTid, avgangsTid) VALUES (1, 5, 5, '16:48', '16:49'); -- Dagtog Trondheim - Bodø | Fauske
+INSERT INTO Stoppested (rutenummer, stasjonId, stoppNummer, ankomstTid, avgangsTid) VALUES (1, 6, 6, '17:34', null); -- Dagtog Trondheim - Bodø | Bodø
 
-INSERT INTO Stoppested (rutenummer, stasjonId, stoppNummer, ankomstTid, avgangTid) VALUES (2, 1, 1, null, '23:05'); -- Nattog Trondheim - Bodø | Trondheim
-INSERT INTO Stoppested (rutenummer, stasjonId, stoppNummer, ankomstTid, avgangTid) VALUES (2, 2, 2, '00:06', '00:57'); -- Nattog Trondheim - Bodø | Steinkjær
-INSERT INTO Stoppested (rutenummer, stasjonId, stoppNummer, ankomstTid, avgangTid) VALUES (2, 3, 3, '04:40', '04:41'); -- Nattog Trondheim - Bodø | Mosjøen
-INSERT INTO Stoppested (rutenummer, stasjonId, stoppNummer, ankomstTid, avgangTid) VALUES (2, 4, 4, '05:54', '05:55'); -- Nattog Trondheim - Bodø | Mo i Rana
-INSERT INTO Stoppested (rutenummer, stasjonId, stoppNummer, ankomstTid, avgangTid) VALUES (2, 5, 5, '08:18', '08:19'); -- Nattog Trondheim - Bodø | Fauske
-INSERT INTO Stoppested (rutenummer, stasjonId, stoppNummer, ankomstTid, avgangTid) VALUES (2, 6, 6, '09:05', null); -- Nattog Trondheim - Bodø | Bodø
+INSERT INTO Stoppested (rutenummer, stasjonId, stoppNummer, ankomstTid, avgangsTid) VALUES (2, 1, 1, null, '23:05'); -- Nattog Trondheim - Bodø | Trondheim
+INSERT INTO Stoppested (rutenummer, stasjonId, stoppNummer, ankomstTid, avgangsTid) VALUES (2, 2, 2, '00:06', '00:57'); -- Nattog Trondheim - Bodø | Steinkjær
+INSERT INTO Stoppested (rutenummer, stasjonId, stoppNummer, ankomstTid, avgangsTid) VALUES (2, 3, 3, '04:40', '04:41'); -- Nattog Trondheim - Bodø | Mosjøen
+INSERT INTO Stoppested (rutenummer, stasjonId, stoppNummer, ankomstTid, avgangsTid) VALUES (2, 4, 4, '05:54', '05:55'); -- Nattog Trondheim - Bodø | Mo i Rana
+INSERT INTO Stoppested (rutenummer, stasjonId, stoppNummer, ankomstTid, avgangsTid) VALUES (2, 5, 5, '08:18', '08:19'); -- Nattog Trondheim - Bodø | Fauske
+INSERT INTO Stoppested (rutenummer, stasjonId, stoppNummer, ankomstTid, avgangsTid) VALUES (2, 6, 6, '09:05', null); -- Nattog Trondheim - Bodø | Bodø
 
-INSERT INTO Stoppested (rutenummer, stasjonId, stoppNummer, ankomstTid, avgangTid) VALUES (3, 4, 1, null, '08:11'); -- Morgentog Mo i Rana - Trondheim | Mo i Rana
-INSERT INTO Stoppested (rutenummer, stasjonId, stoppNummer, ankomstTid, avgangTid) VALUES (3, 3, 2, '09:13', '09:14'); -- Morgentog Mo i Rana - Trondheim | Mosjøen
-INSERT INTO Stoppested (rutenummer, stasjonId, stoppNummer, ankomstTid, avgangTid) VALUES (3, 2, 3, '12:30', '12:31'); -- Morgentog Mo i Rana - Trondheim | Steinkjær
-INSERT INTO Stoppested (rutenummer, stasjonId, stoppNummer, ankomstTid, avgangTid) VALUES (3, 1, 4, '14:13', null); -- Morgentog Mo i Rana - Trondheim | Trondheim
+INSERT INTO Stoppested (rutenummer, stasjonId, stoppNummer, ankomstTid, avgangsTid) VALUES (3, 4, 1, null, '08:11'); -- Morgentog Mo i Rana - Trondheim | Mo i Rana
+INSERT INTO Stoppested (rutenummer, stasjonId, stoppNummer, ankomstTid, avgangsTid) VALUES (3, 3, 2, '09:13', '09:14'); -- Morgentog Mo i Rana - Trondheim | Mosjøen
+INSERT INTO Stoppested (rutenummer, stasjonId, stoppNummer, ankomstTid, avgangsTid) VALUES (3, 2, 3, '12:30', '12:31'); -- Morgentog Mo i Rana - Trondheim | Steinkjær
+INSERT INTO Stoppested (rutenummer, stasjonId, stoppNummer, ankomstTid, avgangsTid) VALUES (3, 1, 4, '14:13', null); -- Morgentog Mo i Rana - Trondheim | Trondheim
 
 
 
