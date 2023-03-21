@@ -1,6 +1,6 @@
 -- SQL
 
-CREATE TABLE Banestrekning (
+CREATE TABLE IF NOT EXISTS Banestrekning (
     banestrekningId INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     navn varchar(60) NOT NULL,
     fremdriftsenergi varchar(40) NOT NULL,
@@ -11,13 +11,13 @@ CREATE TABLE Banestrekning (
     CONSTRAINT CHK_stasjon CHECK (startStasjonId != endeStasjonId)
 );
 
-CREATE TABLE Jernbanestasjon (
+CREATE TABLE IF NOT EXISTS Jernbanestasjon (
     stasjonId INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     navn varchar(60) NOT NULL,
     moh INTEGER NOT NULL
 );
 
-CREATE TABLE Delstrekning (
+CREATE TABLE IF NOT EXISTS Delstrekning (
     startStasjonId INTEGER NOT NULL,
     endeStasjonId INTEGER NOT NULL,
     avstand INTEGER NOT NULL,
@@ -29,7 +29,7 @@ CREATE TABLE Delstrekning (
     CONSTRAINT CHK_avstand CHECK (avstand >= 0)
 );
 
-CREATE TABLE DelstrekningPaaBanestrekning (
+CREATE TABLE IF NOT EXISTS DelstrekningPaaBanestrekning (
     banestrekningId INTEGER NOT NULL,
     startStasjonId INTEGER NOT NULL,
     endeStasjonId INTEGER NOT NULL,
@@ -38,7 +38,7 @@ CREATE TABLE DelstrekningPaaBanestrekning (
     CONSTRAINT PK_DelstrekningPaaBanestrekning PRIMARY KEY (banestrekningId, startStasjonId, endeStasjonId)
 );
 
-CREATE TABLE Togrute (
+CREATE TABLE IF NOT EXISTS Togrute (
     rutenummer INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     operatorId INTEGER NOT NULL,
     vognOppsettId INTEGER NOT NULL,
@@ -49,7 +49,7 @@ CREATE TABLE Togrute (
     FOREIGN KEY (banestrekningId) REFERENCES Banestrekning(banestrekningId) ON UPDATE CASCADE ON DELETE SET NULL
 );
 
-CREATE TABLE TogruteHarDelstrekning (
+CREATE TABLE IF NOT EXISTS TogruteHarDelstrekning (
     rutenummer INTEGER NOT NULL,
     startStasjonId INTEGER NOT NULL,
     endeStasjonId INTEGER NOT NULL,
@@ -59,7 +59,7 @@ CREATE TABLE TogruteHarDelstrekning (
 
 );
 
-CREATE TABLE Stoppested (
+CREATE TABLE IF NOT EXISTS Stoppested (
     rutenummer INTEGER NOT NULL,
     stasjonId INTEGER NOT NULL,
     stoppNummer INTEGER NOT NULL,
@@ -70,26 +70,26 @@ CREATE TABLE Stoppested (
     CONSTRAINT PK_Stoppested PRIMARY KEY (rutenummer, stasjonId)
 );
 
-CREATE TABLE Togruteforekomst (
+CREATE TABLE IF NOT EXISTS Togruteforekomst (
     rutenummer INTEGER NOT NULL,
     dato DATE NOT NULL,
     FOREIGN KEY (rutenummer) REFERENCES Togrute(rutenummer) ON UPDATE CASCADE ON DELETE CASCADE,
     CONSTRAINT PK_Togruteforekomst PRIMARY KEY (rutenummer, dato)
 );
 
-CREATE TABLE Operator (
+CREATE TABLE IF NOT EXISTS Operator (
     operatorId INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     navn varchar(60) NOT NULL
 );
 
-CREATE TABLE Vogn (
+CREATE TABLE IF NOT EXISTS Vogn (
     vognId INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     operatorId INTEGER NOT NULL,
     vognType BOOLEAN NOT NULL,
     FOREIGN KEY (operatorId) REFERENCES Operator(operatorId) ON UPDATE CASCADE ON DELETE SET NULL
 );
 
-CREATE TABLE SitteVogn (
+CREATE TABLE IF NOT EXISTS SitteVogn (
     vognId INTEGER NOT NULL PRIMARY KEY,
     antallRader INTEGER NOT NULL,
     antallSeterPerRad INTEGER NOT NULL,
@@ -98,7 +98,7 @@ CREATE TABLE SitteVogn (
     CONSTRAINT CHK_antallSeterPerRad CHECK (antallSeterPerRad > 0)
 );
 
-CREATE TABLE SoveVogn (
+CREATE TABLE IF NOT EXISTS SoveVogn (
     vognId INTEGER NOT NULL PRIMARY KEY,
     antallKupeer INTEGER NOT NULL,
     antallSengerPerKupe INTEGER NOT NULL,
@@ -108,12 +108,12 @@ CREATE TABLE SoveVogn (
 );
 
 
-CREATE TABLE VognOppsett (
+CREATE TABLE IF NOT EXISTS VognOppsett (
     vognOppsettId INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     beskrivelse varchar(255)
 );
 
-CREATE TABLE VognerPaaVognOppsett (
+CREATE TABLE IF NOT EXISTS VognerPaaVognOppsett (
     vognOppsettId INTEGER NOT NULL,
     vognId INTEGER NOT NULL,
     rekkefolge INTEGER NOT NULL, 
@@ -123,7 +123,7 @@ CREATE TABLE VognerPaaVognOppsett (
     CONSTRAINT CHK_rekkefolge CHECK (rekkefolge > 0)
 );
 
-CREATE TABLE Kunde (
+CREATE TABLE IF NOT EXISTS Kunde (
     kundenummer INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     fornavn varchar(60) NOT NULL,
     etternavn varchar(60) NOT NULL,
@@ -131,14 +131,14 @@ CREATE TABLE Kunde (
     tlfNr varchar(20) NOT NULL
 );
 
-CREATE TABLE Kundeordre (
+CREATE TABLE IF NOT EXISTS Kundeordre (
     ordrenummer INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     kundeId INTEGER NOT NULL,
     tidspunkt datetime NOT NULL,
     FOREIGN KEY (kundeId) REFERENCES Kunde(kundenummer) ON UPDATE CASCADE ON DELETE SET NULL
 );
 
-CREATE TABLE Billett (
+CREATE TABLE IF NOT EXISTS Billett (
     ordrenummer INTEGER NOT NULL,
     rutenummer INTEGER NOT NULL,
     avgangsDato DATE NOT NULL,
