@@ -196,7 +196,7 @@ CREATE TABLE IF NOT EXISTS Billett (
 """
 ]
 
-def create():
+def createAllTables():
     cur = con.cursor()
     dropAllTables(cur)
     
@@ -209,8 +209,8 @@ def create():
     else:
         print("Error! cannot create the database connection.")
 
-
 def main():
-    create()
+    createAllTables()
+
 
 main()
