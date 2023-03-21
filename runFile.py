@@ -10,7 +10,7 @@ def runFile(filename):
     db.commit()
     db.close()
 
-
-# runFile('jernbane.sql') for å lage databasen
+# runFile("dropTables.sql") # for å slette databasen
+# runFile('jernbane.sql') # for å lage databasen
 runFile('eksempelData.sql')
 
