@@ -34,8 +34,7 @@ CREATE TABLE DelstrekningPaaBanestrekning (
     startStasjonId INTEGER NOT NULL,
     endeStasjonId INTEGER NOT NULL,
     FOREIGN KEY (banestrekningId) REFERENCES Banestrekning(banestrekningId) ON UPDATE CASCADE ON DELETE SET NULL,
-    FOREIGN KEY (startStasjonId) REFERENCES Delstrekning(startStasjonId) ON UPDATE CASCADE ON DELETE SET NULL,
-    FOREIGN KEY (endeStasjonId) REFERENCES Delstrekning(endeStasjonId) ON UPDATE CASCADE ON DELETE SET NULL,
+    FOREIGN KEY (startStasjonId, endeStasjonId ) REFERENCES Delstrekning(startStasjonId, endeStasjonId) ON UPDATE CASCADE ON DELETE SET NULL,
     CONSTRAINT PK_DelstrekningPaaBanestrekning PRIMARY KEY (banestrekningId, startStasjonId, endeStasjonId)
 );
 
