@@ -14,7 +14,7 @@ CREATE TABLE IF NOT EXISTS Banestrekning (
 CREATE TABLE IF NOT EXISTS Jernbanestasjon (
     stasjonId INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     navn varchar(60) NOT NULL,
-    moh INTEGER NOT NULL
+    moh DECIMAL(6, 1) NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS Delstrekning (
