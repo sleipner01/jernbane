@@ -8,8 +8,8 @@ def getTickets(kundeNummer):
     res = cur.execute("""
                 SELECT kundenummer, fornavn, etternavn, tidspunkt as "Kjøpetidspunkt", B.rutenummer, 
                 avgangsDato, rekkefolge as "Vogn-rekkefolge", plassNr, j.navn, j2.navn, S1.avgangsTid, S2.ankomstTid
+                
                 FROM Kunde K
-
                 JOIN Kundeordre KO ON K.kundenummer = KO.ordrenummer
                 JOIN Billett B ON B.ordrenummer = KO.ordrenummer
                 JOIN Jernbanestasjon j ON B.startStasjonId = j.stasjonId 
@@ -89,8 +89,9 @@ def getUsers():
     print(" ")
     print("Skriv q for å avslutte programmet\n")
 
-def main():
 
+# TODO Legge til type billett, sove eller sitteplass
+def main():
     getUsers()
     res = ""
     while res != "q":
@@ -107,6 +108,4 @@ def main():
             dict = dataToDict(data)
             printData(dict)
             break
-
-
 main()
