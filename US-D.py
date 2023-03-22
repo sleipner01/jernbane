@@ -25,15 +25,16 @@ def printStations(stations):
         print("| %9s |" % (station))
     print("|-----------|\n")
 
-def getRoutes(date, nextdate):
+def getRoutes(date, time, nextdate):
     cur = con.cursor()
     res = cur.execute("""
                 SELECT TF.dato, S.rutenummer, S.stoppNummer, S.stasjonId FROM Togrute T
                     JOIN Stoppested S ON S.rutenummer = T.rutenummer
                     JOIN Togruteforekomst TF ON TF.rutenummer = T.rutenummer
-                    WHERE dato = ? OR dato= ?
-                    ORDER BY dato, S.rutenummer, stoppnummer ASC
-                """, (date, nextdate))
+                    JOIN Stoppested avreise ON (avreise.rutenummer = T.rutenummer AND avreise.stoppNummer = 1)
+                    WHERE (dato = ? AND avreise.avgangsTid > ?)OR dato= ?
+                    ORDER BY dato, avreise.avgangsTid, S.rutenummer, S.stoppnummer ASC
+                """, (date, time, nextdate))
     routes = {}
     for row in res:
         if row[0] not in routes:
@@ -74,7 +75,7 @@ def getRouteData(date, route, fromStationId, toStationId):
     Rute: %s
     Fra: %10s kl. %5s
     Til: %10s kl. %5s
-    -------------------------\n
+    -------------------------
         """ % (date, row[0], row[1], row[2], row[3], row[4]))
 
 def getNextDate(date):
@@ -111,7 +112,7 @@ def main():
     res = ""
 
     while res != "q":
-        res = input("Velg to stasjoner fra listen over stasjoner separert med komma uten mellomrom (f.eks. Trondheim,Bodø): ")
+        res = input("Velg to stasjoner fra listen over stasjoner separert med komma uten mellomrom (f.eks. Trondheim,Bodø): ").strip()
         if res == "q":
             break
         res = res.split(",")
@@ -129,10 +130,10 @@ def main():
         fromStationId = stationsMap[fromStation]
         toStationId = stationsMap[toStation]
 
-        res = input("Velg dato på formatet YYYY-MM-DD: ")
+        res = input("Velg dato på formatet YYYY-MM-DD: ").strip()
         if res == "q":
             break
-        dates = res.strip().split("-")
+        dates = res.split("-")
         if len(dates) != 3:
             print("Ugyldig dato, prøv igjen")
             continue
@@ -140,9 +141,9 @@ def main():
             print("Ugyldig dato, prøv igjen")
             continue
         try:
-            numYear = int(dates[0])
-            numMonth = int(dates[1])
-            numDate =int(dates[2])
+            int(dates[0])
+            int(dates[1])
+            int(dates[2])
         except:
             print("Ugyldig dato, prøv igjen")
             continue
@@ -170,7 +171,7 @@ def main():
             continue
         time = times[0] + ":" + times[1]
 
-        routes = getRoutes(date, nextDate)
+        routes = getRoutes(date, time, nextDate)
         existingRoutes = getExistingRoutes(routes, fromStationId, toStationId)
         for route in existingRoutes:
             getRouteData(route[0], route[1], fromStationId, toStationId)
