@@ -124,3 +124,4 @@ def main():
             printData(dict)
             break
 main()
+con.close()

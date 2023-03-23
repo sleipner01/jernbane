@@ -14,3 +14,4 @@ def registerUser():
     con.commit()
 
 registerUser()
+con.close()
