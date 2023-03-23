@@ -37,6 +37,67 @@ INSERT INTO Vogn (vognId, operatorId, vognType) VALUES (3, 1, 0); -- Sittevogn-3
 INSERT INTO Vogn (vognId, operatorId, vognType) VALUES (4, 1, 0); -- Sittevogn-4
 INSERT INTO Vogn (vognId, operatorId, vognType) VALUES (5, 1, 1); -- Sovevogn-1
 
+INSERT INTO Plass (vognId, plassNr) VALUES (1, 1);
+INSERT INTO Plass (vognId, plassNr) VALUES (1, 2);
+INSERT INTO Plass (vognId, plassNr) VALUES (1, 3);
+INSERT INTO Plass (vognId, plassNr) VALUES (1, 4);
+INSERT INTO Plass (vognId, plassNr) VALUES (1, 5);
+INSERT INTO Plass (vognId, plassNr) VALUES (1, 6);
+INSERT INTO Plass (vognId, plassNr) VALUES (1, 7);
+INSERT INTO Plass (vognId, plassNr) VALUES (1, 8);
+INSERT INTO Plass (vognId, plassNr) VALUES (1, 9);
+INSERT INTO Plass (vognId, plassNr) VALUES (1, 10);
+INSERT INTO Plass (vognId, plassNr) VALUES (1, 11);
+INSERT INTO Plass (vognId, plassNr) VALUES (1, 12);
+
+INSERT INTO Plass (vognId, plassNr) VALUES (2, 1);
+INSERT INTO Plass (vognId, plassNr) VALUES (2, 2);
+INSERT INTO Plass (vognId, plassNr) VALUES (2, 3);
+INSERT INTO Plass (vognId, plassNr) VALUES (2, 4);
+INSERT INTO Plass (vognId, plassNr) VALUES (2, 5);
+INSERT INTO Plass (vognId, plassNr) VALUES (2, 6);
+INSERT INTO Plass (vognId, plassNr) VALUES (2, 7);
+INSERT INTO Plass (vognId, plassNr) VALUES (2, 8);
+INSERT INTO Plass (vognId, plassNr) VALUES (2, 9);
+INSERT INTO Plass (vognId, plassNr) VALUES (2, 10);
+INSERT INTO Plass (vognId, plassNr) VALUES (2, 11);
+INSERT INTO Plass (vognId, plassNr) VALUES (2, 12);
+
+INSERT INTO Plass (vognId, plassNr) VALUES (3, 1);
+INSERT INTO Plass (vognId, plassNr) VALUES (3, 2);
+INSERT INTO Plass (vognId, plassNr) VALUES (3, 3);
+INSERT INTO Plass (vognId, plassNr) VALUES (3, 4);
+INSERT INTO Plass (vognId, plassNr) VALUES (3, 5);
+INSERT INTO Plass (vognId, plassNr) VALUES (3, 6);
+INSERT INTO Plass (vognId, plassNr) VALUES (3, 7);
+INSERT INTO Plass (vognId, plassNr) VALUES (3, 8);
+INSERT INTO Plass (vognId, plassNr) VALUES (3, 9);
+INSERT INTO Plass (vognId, plassNr) VALUES (3, 10);
+INSERT INTO Plass (vognId, plassNr) VALUES (3, 11);
+INSERT INTO Plass (vognId, plassNr) VALUES (3, 12);
+
+INSERT INTO Plass (vognId, plassNr) VALUES (4, 1);
+INSERT INTO Plass (vognId, plassNr) VALUES (4, 2);
+INSERT INTO Plass (vognId, plassNr) VALUES (4, 3);
+INSERT INTO Plass (vognId, plassNr) VALUES (4, 4);
+INSERT INTO Plass (vognId, plassNr) VALUES (4, 5);
+INSERT INTO Plass (vognId, plassNr) VALUES (4, 6);
+INSERT INTO Plass (vognId, plassNr) VALUES (4, 7);
+INSERT INTO Plass (vognId, plassNr) VALUES (4, 8);
+INSERT INTO Plass (vognId, plassNr) VALUES (4, 9);
+INSERT INTO Plass (vognId, plassNr) VALUES (4, 10);
+INSERT INTO Plass (vognId, plassNr) VALUES (4, 11);
+INSERT INTO Plass (vognId, plassNr) VALUES (4, 12);
+
+INSERT INTO Plass (vognId, plassNr) VALUES (5, 1);
+INSERT INTO Plass (vognId, plassNr) VALUES (5, 2);
+INSERT INTO Plass (vognId, plassNr) VALUES (5, 3);
+INSERT INTO Plass (vognId, plassNr) VALUES (5, 4);
+INSERT INTO Plass (vognId, plassNr) VALUES (5, 5);
+INSERT INTO Plass (vognId, plassNr) VALUES (5, 6);
+INSERT INTO Plass (vognId, plassNr) VALUES (5, 7);
+INSERT INTO Plass (vognId, plassNr) VALUES (5, 8);
+
 -- Sittevogn
 INSERT INTO Sittevogn (vognId, antallRader, antallSeterPerRad) VALUES (1, 3, 4);
 INSERT INTO Sittevogn (vognId, antallRader, antallSeterPerRad) VALUES (2, 3, 4);
