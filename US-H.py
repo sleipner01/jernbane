@@ -7,10 +7,10 @@ def getTickets(kundeNummer):
     cur = con.cursor()
     res = cur.execute("""
                 SELECT kundenummer, fornavn, etternavn, tidspunkt as "Kjøpetidspunkt", B.rutenummer, 
-                avgangsDato, rekkefolge as "Vogn-rekkefolge", plassNr, j.navn, j2.navn, S1.avgangsTid, S2.ankomstTid
+                avgangsDato, rekkefolge as "Vogn-rekkefolge", plassNr, vogntype, j.navn, j2.navn, S1.avgangsTid, S2.ankomstTid
                 
                 FROM Kunde K
-                JOIN Kundeordre KO ON K.kundenummer = KO.ordrenummer
+                JOIN Kundeordre KO ON K.kundenummer = KO.kundeId
                 JOIN Billett B ON B.ordrenummer = KO.ordrenummer
                 JOIN Jernbanestasjon j ON B.startStasjonId = j.stasjonId 
                 JOIN Jernbanestasjon j2  ON B.endeStasjonId = j2.stasjonId
@@ -20,9 +20,11 @@ def getTickets(kundeNummer):
                 JOIN (  Togrute t2
                     JOIN VognOppsett ON VognOppsett.vognOppsettId = t2.vognOppsettId
                     JOIN VognerPaaVognOppsett ON VognerPaaVognOppsett.vognOppsettId = VognOppsett.vognOppsettId
-                    JOIN Vogn ON VognerPaaVognOppsett.vognId = Vogn.vognId) ON t2.rutenummer = Vogn.vognId = B.vognId
+                    JOIN Vogn ON VognerPaaVognOppsett.vognId = Vogn.vognId) ON t2.rutenummer = b.rutenummer AND Vogn.vognId = B.vognId
 
-                    WHERE K.kundenummer = ? AND avgangsDato > ?
+                WHERE K.kundenummer = ? AND avgangsDato > ?
+                ORDER BY avgangsDato, S1.avgangsTid ASC
+
                 """, (str(kundeNummer) , str(datetime.datetime.now())))
     
     return res.fetchall()
@@ -39,10 +41,12 @@ def dataToDict(data):
         tmp["avgangsDato"] = row[5]
         tmp["Vogn-rekkefølge"] = row[6]
         tmp["plassNr"] = row[7]
-        tmp["startStasjon"] = row[8]
-        tmp["sluttStasjon"] = row[9]
-        tmp["avreise"] = row[10]
-        tmp["ankomst"] = row[11]
+        tmp["vogntype"] = row[8]
+        tmp["startStasjon"] = row[9]
+        tmp["sluttStasjon"] = row[10]
+        tmp["avreise"] = row[11]
+        tmp["ankomst"] = row[12]
+
         dict.append(tmp)
 
     return dict
@@ -60,11 +64,22 @@ def printData(dict):
             \rFra: %9s     Til: %9s
             \rAvgang: %5s      Ankomst: %5s
             \rRutenummer: %s
-            \r---------------------------------
-            \rVogn-rekkefølge: %3s  PlassNr: %2s
-
-        """ %(ticket["avgangsDato"], ticket["startStasjon"], ticket["sluttStasjon"], ticket["avreise"], ticket["ankomst"], ticket["rutenummer"], ticket["Vogn-rekkefølge"], ticket["plassNr"]))
+            \r---------------------------------""" %(ticket["avgangsDato"], ticket["startStasjon"], ticket["sluttStasjon"], ticket["avreise"], ticket["ankomst"], ticket["rutenummer"]))
         
+        if(ticket["vogntype"] == 1):
+            coupe = ticket["plassNr"] // 2
+            print("""\rSovevogn:
+            \rVogn-rekkefølge: %3s  Kupe: %2s
+            \rSeng-nr: %1s
+            \r---------------------------------
+            """ %(ticket["Vogn-rekkefølge"], coupe, ticket["plassNr"]))
+    
+        if(ticket["vogntype"] == 0):
+            print("""\rSittevogn:
+            \rVogn-rekkefølge: %3s Plass-nr: %2s
+            \r---------------------------------
+            """ %(ticket["Vogn-rekkefølge"], ticket["plassNr"]))
+
 def getUsers():
     cur = con.cursor()
     res = cur.execute("""

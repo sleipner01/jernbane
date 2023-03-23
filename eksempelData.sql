@@ -58,7 +58,7 @@ INSERT INTO VognerPaaVognoppsett (vognOppsettId, vognId, rekkefolge) VALUES (1, 
 INSERT INTO VognerPaaVognoppsett (vognOppsettId, vognId, rekkefolge) VALUES (1, 2, 2); -- Sittevogn-2
 -- Nattog Trondheim - Bodø
 INSERT INTO VognerPaaVognoppsett (vognOppsettId, vognId, rekkefolge) VALUES (2, 3, 1); -- Sittevogn-3
-INSERT INTO VognerPaaVognoppsett (vognOppsettId, vognId, rekkefolge) VALUES (2, 4, 2); -- Sovevogn-1
+INSERT INTO VognerPaaVognoppsett (vognOppsettId, vognId, rekkefolge) VALUES (2, 5, 2); -- Sovevogn-1
 -- Morgentog Mo i Rana til Trondheim
 INSERT INTO VognerPaaVognoppsett (vognOppsettId, vognId, rekkefolge) VALUES (3, 1, 1); -- Sittevogn-4
 
@@ -145,3 +145,4 @@ INSERT INTO Kundeordre (ordrenummer, kundeId, tidspunkt) VALUES (4, 2, '2023-03-
 
 INSERT INTO Billett (ordrenummer, rutenummer, avgangsDato, vognId, startStasjonId, endeStasjonId, plassNr) VALUES (1, 1, "2023-04-03", 1, 1, 6, 1); -- Kunde 1 (Ola Nordmann) |  Rute 1 | 2023-04-03 | Vogn 1 | StartStasjon 1 (Trondheim) | Endestasjon 6 (Bodø) | Plass 1
 INSERT INTO Billett (ordrenummer, rutenummer, avgangsDato, vognId, startStasjonId, endeStasjonId, plassNr) VALUES (1, 1, "2023-04-03", 1, 1, 6, 2); -- Kunde 1 (Ola Nordmann) |  Rute 1 | 2023-04-03 | Vogn 1 | StartStasjon 1 (Trondheim) | Endestasjon 6 (Bodø) | Plass 2
+INSERT INTO Billett (ordrenummer, rutenummer, avgangsDato, vognId, startStasjonId, endeStasjonId, plassNr) VALUES (3, 2, "2023-04-04", 5, 1, 6, 3); -- Kunde 1 (Ola Nordmann) |  Rute 2 | 2023-04-03 | Vogn 1 | StartStasjon 1 (Trondheim) | Endestasjon 6 (Bodø) | Plass 3
