@@ -37,6 +37,67 @@ INSERT INTO Vogn (vognId, operatorId, vognType) VALUES (3, 1, 0); -- Sittevogn-3
 INSERT INTO Vogn (vognId, operatorId, vognType) VALUES (4, 1, 0); -- Sittevogn-4
 INSERT INTO Vogn (vognId, operatorId, vognType) VALUES (5, 1, 1); -- Sovevogn-1
 
+INSERT INTO Plass (vognId, plassNr) VALUES (1, 1);
+INSERT INTO Plass (vognId, plassNr) VALUES (1, 2);
+INSERT INTO Plass (vognId, plassNr) VALUES (1, 3);
+INSERT INTO Plass (vognId, plassNr) VALUES (1, 4);
+INSERT INTO Plass (vognId, plassNr) VALUES (1, 5);
+INSERT INTO Plass (vognId, plassNr) VALUES (1, 6);
+INSERT INTO Plass (vognId, plassNr) VALUES (1, 7);
+INSERT INTO Plass (vognId, plassNr) VALUES (1, 8);
+INSERT INTO Plass (vognId, plassNr) VALUES (1, 9);
+INSERT INTO Plass (vognId, plassNr) VALUES (1, 10);
+INSERT INTO Plass (vognId, plassNr) VALUES (1, 11);
+INSERT INTO Plass (vognId, plassNr) VALUES (1, 12);
+
+INSERT INTO Plass (vognId, plassNr) VALUES (2, 1);
+INSERT INTO Plass (vognId, plassNr) VALUES (2, 2);
+INSERT INTO Plass (vognId, plassNr) VALUES (2, 3);
+INSERT INTO Plass (vognId, plassNr) VALUES (2, 4);
+INSERT INTO Plass (vognId, plassNr) VALUES (2, 5);
+INSERT INTO Plass (vognId, plassNr) VALUES (2, 6);
+INSERT INTO Plass (vognId, plassNr) VALUES (2, 7);
+INSERT INTO Plass (vognId, plassNr) VALUES (2, 8);
+INSERT INTO Plass (vognId, plassNr) VALUES (2, 9);
+INSERT INTO Plass (vognId, plassNr) VALUES (2, 10);
+INSERT INTO Plass (vognId, plassNr) VALUES (2, 11);
+INSERT INTO Plass (vognId, plassNr) VALUES (2, 12);
+
+INSERT INTO Plass (vognId, plassNr) VALUES (3, 1);
+INSERT INTO Plass (vognId, plassNr) VALUES (3, 2);
+INSERT INTO Plass (vognId, plassNr) VALUES (3, 3);
+INSERT INTO Plass (vognId, plassNr) VALUES (3, 4);
+INSERT INTO Plass (vognId, plassNr) VALUES (3, 5);
+INSERT INTO Plass (vognId, plassNr) VALUES (3, 6);
+INSERT INTO Plass (vognId, plassNr) VALUES (3, 7);
+INSERT INTO Plass (vognId, plassNr) VALUES (3, 8);
+INSERT INTO Plass (vognId, plassNr) VALUES (3, 9);
+INSERT INTO Plass (vognId, plassNr) VALUES (3, 10);
+INSERT INTO Plass (vognId, plassNr) VALUES (3, 11);
+INSERT INTO Plass (vognId, plassNr) VALUES (3, 12);
+
+INSERT INTO Plass (vognId, plassNr) VALUES (4, 1);
+INSERT INTO Plass (vognId, plassNr) VALUES (4, 2);
+INSERT INTO Plass (vognId, plassNr) VALUES (4, 3);
+INSERT INTO Plass (vognId, plassNr) VALUES (4, 4);
+INSERT INTO Plass (vognId, plassNr) VALUES (4, 5);
+INSERT INTO Plass (vognId, plassNr) VALUES (4, 6);
+INSERT INTO Plass (vognId, plassNr) VALUES (4, 7);
+INSERT INTO Plass (vognId, plassNr) VALUES (4, 8);
+INSERT INTO Plass (vognId, plassNr) VALUES (4, 9);
+INSERT INTO Plass (vognId, plassNr) VALUES (4, 10);
+INSERT INTO Plass (vognId, plassNr) VALUES (4, 11);
+INSERT INTO Plass (vognId, plassNr) VALUES (4, 12);
+
+INSERT INTO Plass (vognId, plassNr) VALUES (5, 1);
+INSERT INTO Plass (vognId, plassNr) VALUES (5, 2);
+INSERT INTO Plass (vognId, plassNr) VALUES (5, 3);
+INSERT INTO Plass (vognId, plassNr) VALUES (5, 4);
+INSERT INTO Plass (vognId, plassNr) VALUES (5, 5);
+INSERT INTO Plass (vognId, plassNr) VALUES (5, 6);
+INSERT INTO Plass (vognId, plassNr) VALUES (5, 7);
+INSERT INTO Plass (vognId, plassNr) VALUES (5, 8);
+
 -- Sittevogn
 INSERT INTO Sittevogn (vognId, antallRader, antallSeterPerRad) VALUES (1, 3, 4);
 INSERT INTO Sittevogn (vognId, antallRader, antallSeterPerRad) VALUES (2, 3, 4);
@@ -105,9 +166,9 @@ INSERT INTO TogruteHarDelstrekning (rutenummer, startStasjonId, endeStasjonId) V
 INSERT INTO TOgruteHarDelstrekning (rutenummer, startStasjonId, endeStasjonId) VALUES (2, 4, 5); -- Nattog Trondheim - Bodø
 INSERT INTO TogruteHarDelstrekning (rutenummer, startStasjonId, endeStasjonId) VALUES (2, 5, 6); -- Nattog Trondheim - Bodø
 
-INSERT INTO TogruteHarDelstrekning (rutenummer, startStasjonId, endeStasjonId) VALUES (3, 1, 2); -- Morgentog Mo i Rana - Trondheim
-INSERT INTO TogruteHarDelstrekning (rutenummer, startStasjonId, endeStasjonId) VALUES (3, 2, 3); -- Morgentog Mo i Rana - Trondheim
-INSERT INTO TogruteHarDelstrekning (rutenummer, startStasjonId, endeStasjonId) VALUES (3, 3, 4); -- Morgentog Mo i Rana - Trondheim
+INSERT INTO TogruteHarDelstrekning (rutenummer, startStasjonId, endeStasjonId) VALUES (3, 4, 3); -- Morgentog Mo i Rana - Trondheim
+INSERT INTO TogruteHarDelstrekning (rutenummer, startStasjonId, endeStasjonId) VALUES (3, 3, 2); -- Morgentog Mo i Rana - Trondheim
+INSERT INTO TogruteHarDelstrekning (rutenummer, startStasjonId, endeStasjonId) VALUES (3, 2, 1); -- Morgentog Mo i Rana - Trondheim
 
 -- Stoppested
 INSERT INTO Stoppested (rutenummer, stasjonId, stoppNummer, ankomstTid, avgangsTid) VALUES (1, 1, 1, null, '07:59'); -- Dagtog Trondheim - Bodø | Trondheim
@@ -145,4 +206,7 @@ INSERT INTO Kundeordre (ordrenummer, kundeId, tidspunkt) VALUES (4, 2, '2023-03-
 
 INSERT INTO Billett (ordrenummer, rutenummer, avgangsDato, vognId, startStasjonId, endeStasjonId, plassNr) VALUES (1, 1, "2023-04-03", 1, 1, 6, 1); -- Kunde 1 (Ola Nordmann) |  Rute 1 | 2023-04-03 | Vogn 1 | StartStasjon 1 (Trondheim) | Endestasjon 6 (Bodø) | Plass 1
 INSERT INTO Billett (ordrenummer, rutenummer, avgangsDato, vognId, startStasjonId, endeStasjonId, plassNr) VALUES (1, 1, "2023-04-03", 1, 1, 6, 2); -- Kunde 1 (Ola Nordmann) |  Rute 1 | 2023-04-03 | Vogn 1 | StartStasjon 1 (Trondheim) | Endestasjon 6 (Bodø) | Plass 2
-INSERT INTO Billett (ordrenummer, rutenummer, avgangsDato, vognId, startStasjonId, endeStasjonId, plassNr) VALUES (3, 2, "2023-04-04", 5, 1, 6, 3); -- Kunde 1 (Ola Nordmann) |  Rute 2 | 2023-04-03 | Vogn 1 | StartStasjon 1 (Trondheim) | Endestasjon 6 (Bodø) | Plass 3
+INSERT INTO Billett (ordrenummer, rutenummer, avgangsDato, vognId, startStasjonId, endeStasjonId, plassNr) VALUES (3, 1, "2023-04-03", 1, 2, 4, 3); -- Kunde 1 (Ola Nordmann) |  Rute 1 | 2023-04-03 | Vogn 1 | StartStasjon 1 (Trondheim) | Endestasjon 6 (Bodø) | Plass 2
+INSERT INTO Billett (ordrenummer, rutenummer, avgangsDato, vognId, startStasjonId, endeStasjonId, plassNr) VALUES (3, 2, "2023-04-04", 5, 2, 6, 3); -- Kunde 1 (Ola Nordmann) |  Rute 2 | 2023-04-03 | Vogn 1 | StartStasjon 1 (Trondheim) | Endestasjon 6 (Bodø) | Plass 3
+INSERT INTO Billett (ordrenummer, rutenummer, avgangsDato, vognId, startStasjonId, endeStasjonId, plassNr) VALUES (3, 3, "2023-04-04", 1, 4, 1, 3); -- Kunde 1 (Ola Nordmann) |  Rute 2 | 2023-04-03 | Vogn 1 | StartStasjon 1 (Trondheim) | Endestasjon 6 (Bodø) | Plass 3
+INSERT INTO Billett (ordrenummer, rutenummer, avgangsDato, vognId, startStasjonId, endeStasjonId, plassNr) VALUES (3, 3, "2023-04-04", 1, 4, 2, 4); -- Kunde 1 (Ola Nordmann) |  Rute 2 | 2023-04-03 | Vogn 1 | StartStasjon 1 (Trondheim) | Endestasjon 6 (Bodø) | Plass 3
