@@ -11,24 +11,38 @@ def getStations():
 
 
 def getTrainsPerDayPerStation(date, station):
+    routeInfo = []
+    
     cur = con.cursor()
     res = cur.execute("""
-                SELECT Togrute.rutenummer FROM Jernbanestasjon 
+                SELECT Togrute.rutenummer, Stoppested.avgangsTid FROM Jernbanestasjon 
                     JOIN Stoppested ON Stoppested.stasjonId = Jernbanestasjon.stasjonId
                     JOIN Togrute ON Stoppested.rutenummer = Togrute.rutenummer
                     JOIN Togruteforekomst ON Togruteforekomst.rutenummer = Togrute.rutenummer
                     WHERE Jernbanestasjon.navn = ? AND Togruteforekomst.dato = ?
                 """, (station, date))
+    
+    routes = res.fetchall()
+    for route in routes:
+        cur = con.cursor()
+        res = cur.execute("""
+                    SELECT Jernbanestasjon.navn FROM Stoppested
+                    JOIN Jernbanestasjon ON Stoppested.stasjonId = Jernbanestasjon.stasjonId
+                    WHERE Stoppested.rutenummer = ?
+                    ORDER BY stoppNummer
+                    """, ((route[0],)))
+        stops = res.fetchall()
+        routeInfo.append("Rute " + str(route[0]) + ": " + ", ".join(stops[0]) + " - " + " - ".join(stops[-1]) + " (" + ("Avgang: " + route[1] if route[1] else "Endestasjon") + ")" )
 
-    return res.fetchall()
+    return routeInfo
 
 
 def printResult(res, date, station):
     values = []
     for value in res:
-        values.append(value[0])
+        values.append(value)
 
-    print("\nRuter som går fra " + station + " den " + date + ":")
+    print("\nRuter som går innom " + station + " den " + date + ":")
 
     if (len(values) == 0):
         print("Ingen ruter denne dagen")
@@ -70,8 +84,8 @@ def main():
             print("Du må skrive inn dato og stasjon")
             continue
 
-        day = res.split(",")[0]
-        station = res.split(",")[1]
+        day = res.split(",")[0].strip()
+        station = res.split(",")[1].strip()
 
         date = dayToDate(day) # converts day to date since we only have dates in the database and every week is equal
 
