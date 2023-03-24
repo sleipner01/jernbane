@@ -61,6 +61,8 @@ def printResult(res, date, station):
 
 """
 Konverterer ukedag til en dato i April 2023  
+
+@:param day: En streng med de første 3 bokstavene i en ukedag som skal konverteres
 """
 def dayToDate(day):
     dayConverter = {
