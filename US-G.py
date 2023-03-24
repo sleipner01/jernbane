@@ -1,12 +1,13 @@
+import datetime
 import sqlite3
 
 con = sqlite3.connect("jernbanen.db")
 
-def getAvailableSeatsOnRoute(route, travel, departure, arrival):
+def getAvailableSeatsOnRoute(travel):
 
     cur = con.cursor()
     res = cur.execute("""
-                        SELECT TF.dato, T.rutenummer, V.vognId as "VognID", Sitteplass.plassNr as SitteplassNr, Soveplass.plassNr as SoveplassNr,DS.startStasjonId, DS.endeStasjonId,  B2.plassNr, B3.ordrenummer, T.hovedretning, V.vognType FROM Togrute T
+                        SELECT TF.dato, T.rutenummer, V.vognId, Sitteplass.plassNr as SitteplassNr, Soveplass.plassNr as SoveplassNr,DS.startStasjonId, DS.endeStasjonId,  B2.plassNr, B3.ordrenummer, T.hovedretning, V.vognType FROM Togrute T
 
                         JOIN TogruteHarDelstrekning DS ON T.rutenummer = DS.rutenummer
                         JOIN Togruteforekomst TF ON TF.rutenummer = T.rutenummer
@@ -20,10 +21,10 @@ def getAvailableSeatsOnRoute(route, travel, departure, arrival):
                         LEFT JOIN Billett B2 ON B2.plassNr = Sitteplass.plassNr AND B2.vognId = Sitteplass.vognId AND TF.dato = B2.avgangsDato AND TF.rutenummer = B2.rutenummer AND  ((DS.startStasjonId >= B2.startStasjonId AND DS.endeStasjonId <= B2.endeStasjonId) OR (DS.startStasjonId <= B2.startStasjonId AND DS.endeStasjonId >= B2.endeStasjonId))
                         LEFT JOIN Billett B3 ON B3.plassNr = Soveplass.plassNr AND B3.vognId = Soveplass.vognId AND TF.dato = B3.avgangsDato AND TF.rutenummer = B3.rutenummer AND  ((DS.startStasjonId >= B3.startStasjonId AND DS.endeStasjonId <= B3.endeStasjonId) OR (DS.startStasjonId <= B2.startStasjonId AND DS.endeStasjonId >= B2.endeStasjonId))
 
-                        -- WHERE TF.dato = "2023-04-04"
+                        WHERE TF.dato > "2023-04-01 12:00"
 
                         ORDER BY TF.dato, T.rutenummer, DS.startStasjonId
-                    """)
+                    """) 
     
     distances = {}
 
@@ -40,15 +41,15 @@ def getAvailableSeatsOnRoute(route, travel, departure, arrival):
         "2023-04-04": {
             "2": {
                 "3": {
-                    "1": "123456",
-                    "2": "123456",
-                    "3": "123",
+                    "1": "122344556",
+                    "2": "122344556",
+                    "3": "1223",
                     "4": ""
                     },
                 "4": {
-                    "1": "123456",  
-                    "2": "123456",
-                    "3": "123",
+                    "1": "122344556",  
+                    "2": "122344556",
+                    "3": "1223",
                     "4": ""
                     }
                 }
@@ -95,7 +96,8 @@ def getAvailableSeatsOnRoute(route, travel, departure, arrival):
     res = {}
 
     """
-        print distances in a nice way
+
+        Find available seats on route on given date
 
     """
     for date in distances:
@@ -112,32 +114,34 @@ def getAvailableSeatsOnRoute(route, travel, departure, arrival):
                         res[date][route][wagon].append(str(seat))
                         counter += 1
                         availableSeats.append([date, route, wagon, seat])
+    return res
+
+def printAvailableSeats(data, departure, arrival):
 
     print("\nLedige plasser fra stasjon " + departure + " til stasjon " + arrival + ":\n")
 
     """
         Print available seats on route
     """
-    for date in res:
+    for date in data:
         print("Dato: " + str(date))
         print("---------------------------------------------------------------")
-        for route in res[date]:
+        for route in data[date]:
             stopp = False
-            for wagon in res[date][route]:
-                if (len(res[date][route][wagon]) == 0):
+            for wagon in data[date][route]:
+                if (len(data[date][route][wagon]) == 0):
                     stopp = True
             if(not stopp):
                 print("\t| Rute:" + str(route))  
-                for wagon in res[date][route]:
+                for wagon in data[date][route]:
                     print("\t|\n\t| Vogn: " + str(wagon))
-                    if (len(res[date][route][wagon]) > 0):
+                    if (len(data[date][route][wagon]) > 0):
                         seats = []
-                        for seat in res[date][route][wagon]:
+                        for seat in data[date][route][wagon]:
                             seats.append(str(seat))
                         print("\t| Ledige plasser: " + ", ".join(seats) )
                 print("---------------------------------------------------------------")
 
-    print("\nAntall mulige plasser: " + str(counter))
 
 """
     Get all stations from database for help before user input
@@ -150,6 +154,67 @@ def getAllStations():
         for d in res:
             stations[d[0].lower()] = d[1]
         return stations
+
+def getUsers():
+    cur = con.cursor()
+    res = cur.execute("""
+        SELECT kundenummer, fornavn, etternavn FROM Kunde
+    """)
+    res = res.fetchall()
+
+    users = []
+
+    userIds = []
+
+    for user in res:
+        userIds.append(user[0])
+        tmp = {}
+        tmp["kundenummer"] = user[0]
+        tmp["fornavn"] = user[1]
+        tmp["etternavn"] = user[2]
+        users.append(tmp)
+
+    print("Registrerte kunder:\n")
+    print("Kundenummer\t| Fornavn \t| Etternavn")
+    print("--------------------------------------------------")
+    for user in users:
+        print("%s \t\t| %s\t\t| %s" %(user["kundenummer"], user["fornavn"], user["etternavn"]))
+    print("--------------------------------------------------")
+    print(" ")
+    print("Skriv q for å avslutte programmet\n")
+
+    return userIds
+
+def createOrder(customerId):
+    cur = con.cursor()
+    cur.execute("""
+        INSERT INTO Kundeordre (kundeId, tidspunkt) VALUES (?, ?)
+        """ , (customerId, "2023-03-24 00:00:00"))
+    con.commit()
+
+    orderID = cur.execute("""
+        SELECT MAX(ordrenummer) FROM Kundeordre
+    """)
+    con.commit()
+
+    orderID = orderID.fetchone()[0]
+
+    return orderID
+
+def buyTicket(orderId, routeNumber, date, wagonId, departureInt, arrivalInt, seatNumber):
+
+    cur = con.cursor()
+
+    try:
+        cur.execute("""
+            INSERT INTO Billett (ordrenummer, rutenummer, avgangsDato, vognId, startStasjonId, endeStasjonId, plassNr) VALUES (?, ?, ?, ?, ?, ?, ?)
+            """ , (orderId, routeNumber, date, wagonId, departureInt, arrivalInt, seatNumber))
+        
+        con.commit()
+        return True
+    except:
+        print("Kunne ikke kjøpe billett, prøv igjen.")
+        return False
 
 def main():
 
@@ -188,16 +253,90 @@ def main():
 
         print(travelString)
 
-        getAvailableSeatsOnRoute(2, travelString, departure, arrival)
-
-        input("Ønsker du å kjøpe billett? Trykk enter for å fortsette, skriv q for å avslutte: ")
-
-        if(res == "q"):
-            break
+        availableSeats = getAvailableSeatsOnRoute(travelString)
+        printAvailableSeats(availableSeats, departure, arrival)
 
 
+        while res != "q":
+            availableSeats = getAvailableSeatsOnRoute(travelString)
+            res = input("Ønsker du å kjøpe billett? Trykk enter for å fortsette, skriv q for å avslutte: ")
+
+            if(res == "q"):
+                break
+
+            getUsers()
+
+            customerId = input("Skriv inn ditt kundenummer: ").strip()
+            if(customerId == "q"):
+                break
+
+            if(customerId.isdigit()):
+                customerId = int(customerId)
+            else:
+                print("Kundenummer må være et tall.")
+                continue
 
 
+            routeNumber = input("Skriv inn rutenummer for reisen: ").strip()
+            if(routeNumber == "q"):
+                break
+
+            if(routeNumber.isdigit()):
+                routeNumber = int(routeNumber)
+            else:
+                print("Rutenummer må være et tall.")
+                continue
+
+            date = input("Skriv inn dato for reisen på format (yyyy-mm-dd): ").strip()
+            if(date == "q"):
+                break
+
+            if(len(date) != 10):
+                print("Dato må være på formatet (yyyy-mm-dd)")
+                continue
+
+
+            wagonId = input("Skriv inn vognnummer for reisen: ").strip()
+            if(wagonId == "q"):
+                break
+
+            if(wagonId.isdigit()):
+                wagonId = int(wagonId)
+            else:
+                print("Vognnummer må være et tall.")
+                continue
+
+            seatNumber = input("Skriv inn plassnummer for reisen: ").strip()
+            if(seatNumber == "q"):
+                break
+
+            if(seatNumber.isdigit()):
+                seatNumber = int(seatNumber)
+            else:
+                print("Plassnummer må være et tall.")
+                continue
+
+            orderId = createOrder(customerId)
+
+
+            if(str(seatNumber) in availableSeats[date][routeNumber][wagonId]):
+                validBuy = buyTicket(orderId, routeNumber, date, wagonId, departureInt, arrivalInt, seatNumber)
+                if(validBuy): 
+                    print("Billett kjøpt!")
+
+                    newTicket = input("Ønsker du å kjøpe flere billetter? Trykk enter for å fortsette, skriv q for å avslutte: ")
+
+                    # if(newTicket == "q"):
+                    #     break
+
+                    # newSeat = input("Skriv inn plassnummer for det nye setet: ").strip()
+                    # if(newSeat == "q"):
+                    #     break
+
+
+            else: 
+                print("Plassen er ikke ledig, prøv igjen.")
+                continue
 
 main()
 con.close()
