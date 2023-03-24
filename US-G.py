@@ -67,7 +67,7 @@ def getAvailableSeatsOnRoute(travel):
         if(d[3] != None):
             if(d[3] not in distances[d[0]][d[1]][d[2]]):
                 distances[d[0]][d[1]][d[2]][d[3]] = ""
-                distances[d[0]][d[1]][d[2]]["vogntype"] = d[10]
+                distances[d[0]][d[1]][d[2]]["wagontype"] = d[10]
             if(d[7] == None):
                 if(d[9] == 0):
                     distances[d[0]][d[1]][d[2]][d[3]] = str(d[5]) + str(d[6]) + distances[d[0]][d[1]][d[2]][d[3]]
@@ -76,7 +76,7 @@ def getAvailableSeatsOnRoute(travel):
         if(d[4] != None):
             if(d[4] not in distances[d[0]][d[1]][d[2]]):
                 distances[d[0]][d[1]][d[2]][d[4]] = ""
-                distances[d[0]][d[1]][d[2]]["vogntype"] = d[10] 
+                distances[d[0]][d[1]][d[2]]["wagontype"] = d[10] 
             if(d[8] == None):
                 if(d[9] == 0):
                     distances[d[0]][d[1]][d[2]][d[4]] = str(d[5]) + str(d[6]) + distances[d[0]][d[1]][d[2]][d[4]]
@@ -107,10 +107,12 @@ def getAvailableSeatsOnRoute(travel):
                 res[date][route] = {}
             for wagon in distances[date][route]:
                 if (wagon not in res[date][route]):
-                    res[date][route][wagon] = []
+                    res[date][route][wagon] = {}
+                    res[date][route][wagon]["seats"] = []
+                    res[date][route][wagon]["wagontype"] = distances[date][route][wagon]["wagontype"]
                 for seat in distances[date][route][wagon]:
                     if(travel in ("".join(dict.fromkeys(str(distances[date][route][wagon][seat]))))):
-                        res[date][route][wagon].append(str(seat))
+                        res[date][route][wagon]["seats"].append(str(seat))
                         counter += 1
 
     return res
@@ -133,12 +135,20 @@ def printAvailableSeats(data, departure, arrival):
             if(not stopp):
                 print("\t| Rute:" + str(route))  
                 for wagon in data[date][route]:
-                    print("\t|\n\t| Vogn: " + str(wagon))
-                    if (len(data[date][route][wagon]) > 0):
+                    wagonText = ""
+                    seatText = ""
+                    if (data[date][route][wagon]["wagontype"] == 1):
+                        wagonText = "Sovevogn: "
+                        seatText = "senger: "
+                    else:
+                        wagonText = "Sittevogn: "
+                        seatText = "plasser: "
+                    print("\t|\n\t| " + wagonText + str(wagon))
+                    if (len(data[date][route][wagon]["seats"]) > 0):
                         seats = []
-                        for seat in data[date][route][wagon]:
+                        for seat in data[date][route][wagon]["seats"]:
                             seats.append(str(seat))
-                        print("\t| Ledige plasser: " + ", ".join(seats) )
+                        print("\t| Ledige "+ seatText + ", ".join(seats) )
                 print("---------------------------------------------------------------")
 
 
