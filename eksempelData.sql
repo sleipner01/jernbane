@@ -166,9 +166,9 @@ INSERT INTO TogruteHarDelstrekning (rutenummer, startStasjonId, endeStasjonId) V
 INSERT INTO TOgruteHarDelstrekning (rutenummer, startStasjonId, endeStasjonId) VALUES (2, 4, 5); -- Nattog Trondheim - Bodø
 INSERT INTO TogruteHarDelstrekning (rutenummer, startStasjonId, endeStasjonId) VALUES (2, 5, 6); -- Nattog Trondheim - Bodø
 
-INSERT INTO TogruteHarDelstrekning (rutenummer, startStasjonId, endeStasjonId) VALUES (3, 1, 2); -- Morgentog Mo i Rana - Trondheim
-INSERT INTO TogruteHarDelstrekning (rutenummer, startStasjonId, endeStasjonId) VALUES (3, 2, 3); -- Morgentog Mo i Rana - Trondheim
-INSERT INTO TogruteHarDelstrekning (rutenummer, startStasjonId, endeStasjonId) VALUES (3, 3, 4); -- Morgentog Mo i Rana - Trondheim
+INSERT INTO TogruteHarDelstrekning (rutenummer, startStasjonId, endeStasjonId) VALUES (3, 4, 3); -- Morgentog Mo i Rana - Trondheim
+INSERT INTO TogruteHarDelstrekning (rutenummer, startStasjonId, endeStasjonId) VALUES (3, 3, 2); -- Morgentog Mo i Rana - Trondheim
+INSERT INTO TogruteHarDelstrekning (rutenummer, startStasjonId, endeStasjonId) VALUES (3, 2, 1); -- Morgentog Mo i Rana - Trondheim
 
 -- Stoppested
 INSERT INTO Stoppested (rutenummer, stasjonId, stoppNummer, ankomstTid, avgangsTid) VALUES (1, 1, 1, null, '07:59'); -- Dagtog Trondheim - Bodø | Trondheim
