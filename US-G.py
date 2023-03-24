@@ -318,36 +318,39 @@ def main():
 
             occupiedSeats = []
 
-            if(str(seatNumber) in availableSeats[date][routeNumber][wagonId]):
-                occupiedSeats.append(seatNumber)
-                validBuy = buyTicket(orderId, routeNumber, date, wagonId, departureInt, arrivalInt, seatNumber)
-                if(validBuy): 
-                    print("Billett kjøpt!")
+            try:
+                if(str(seatNumber) in availableSeats[date][routeNumber][wagonId]):
+                    occupiedSeats.append(seatNumber)
+                    validBuy = buyTicket(orderId, routeNumber, date, wagonId, departureInt, arrivalInt, seatNumber)
+                    if(validBuy): 
+                        print("Billett kjøpt!")
 
-                    while res != "q":
-                        res = input("Ønsker du å legge til en ny billett i samme vogn? Trykk enter for å fortsette, skriv q for å avslutte: ")
-                        if(res == "q"):
-                            break
+                        while res != "q":
+                            res = input("Ønsker du å legge til en ny billett i samme vogn? Trykk enter for å fortsette, skriv q for å avslutte: ")
+                            if(res == "q"):
+                                break
 
-                        seatNumber = input("Skriv inn plassnummer: ").strip()
-                        if(seatNumber == "q"):
-                            break
-                        if(seatNumber.isdigit()):
-                            seatNumber = int(seatNumber)
-                        else:
-                            print("Plassnummer må være et tall.")
-                            continue
-                        if(str(seatNumber) in availableSeats[date][routeNumber][wagonId] and seatNumber not in occupiedSeats):
-                            occupiedSeats.append(seatNumber)
-                            buyTicket(orderId, routeNumber, date, wagonId, departureInt, arrivalInt, seatNumber)
-                        else:
-                            print("Plassen er ikke ledig, prøv igjen.")
-                            continue
+                            seatNumber = input("Skriv inn plassnummer: ").strip()
+                            if(seatNumber == "q"):
+                                break
+                            if(seatNumber.isdigit()):
+                                seatNumber = int(seatNumber)
+                            else:
+                                print("Plassnummer må være et tall.")
+                                continue
+                            if(str(seatNumber) in availableSeats[date][routeNumber][wagonId] and seatNumber not in occupiedSeats):
+                                occupiedSeats.append(seatNumber)
+                                buyTicket(orderId, routeNumber, date, wagonId, departureInt, arrivalInt, seatNumber)
+                            else:
+                                print("Plassen er ikke ledig, prøv igjen.")
+                                continue
 
-            else: 
-                print("Plassen er ikke ledig, prøv igjen.")
+                else: 
+                    print("Plassen er ikke ledig, prøv igjen.")
+                    continue
+            except:
+                print("Kunne ikke kjøpe billett, prøv igjen.")
                 continue
-
 
             res = input("Ønsker du å kjøpe ny billett? Trykk enter for å fortsette, skriv q for å avslutte: ")
 
