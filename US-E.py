@@ -4,6 +4,9 @@ con = sqlite3.connect('jernbanen.db')
 
 # e) En bruker skal kunne registrere seg i kunderegisteret. Denne funksjonaliteten skal programmeres.
 
+"""
+Terminal-grensesnitt for å registrere en ny bruker
+"""
 def registerUser():
     cur = con.cursor()
     fornavn = input("Fornavn: ")
@@ -15,6 +18,9 @@ def registerUser():
 
     getNewlyRegisteredUser()
 
+"""
+Henter den nyregistrerte brukeren fra databasen
+"""
 def getNewlyRegisteredUser():
     cur = con.cursor()
     res = cur.execute("SELECT * FROM Kunde WHERE kundenummer = (SELECT MAX(kundenummer) FROM Kunde)").fetchone()
