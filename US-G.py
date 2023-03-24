@@ -27,7 +27,7 @@ def getAvailableSeatsOnRoute(route):
 
     cur = con.cursor()
     res = cur.execute("""
-                        SELECT TF.dato, T.rutenummer, V.vognId as "VognID", Sitteplass.plassNr as SitteplassNr, Soveplass.plassNr as SoveplassNr,DS.startStasjonId, DS.endeStasjonId,  B2.plassNr, B3.ordrenummer FROM Togrute T
+                        SELECT TF.dato, T.rutenummer, V.vognId as "VognID", Sitteplass.plassNr as SitteplassNr, Soveplass.plassNr as SoveplassNr,DS.startStasjonId, DS.endeStasjonId,  B2.plassNr, B3.ordrenummer, T.hovedretning FROM Togrute T
 
                         JOIN TogruteHarDelstrekning DS ON T.rutenummer = DS.rutenummer
                         JOIN Togruteforekomst TF ON TF.rutenummer = T.rutenummer
@@ -38,8 +38,8 @@ def getAvailableSeatsOnRoute(route):
                         LEFT JOIN SoveVogn ON SoveVogn.vognId = V.vognId
                         LEFT JOIN Plass Sitteplass ON Sitteplass.vognId = SitteVogn.vognId 
                         LEFT JOIN Plass Soveplass ON Soveplass.vognId = SoveVogn.vognId
-                        LEFT JOIN Billett B2 ON B2.plassNr = Sitteplass.plassNr AND B2.vognId = Sitteplass.vognId AND TF.dato = B2.avgangsDato AND TF.rutenummer = B2.rutenummer
-                        LEFT JOIN Billett B3 ON B3.plassNr = Soveplass.plassNr AND B3.vognId = Soveplass.vognId AND TF.dato = B3.avgangsDato AND TF.rutenummer = B3.rutenummer
+                        LEFT JOIN Billett B2 ON B2.plassNr = Sitteplass.plassNr AND B2.vognId = Sitteplass.vognId AND TF.dato = B2.avgangsDato AND TF.rutenummer = B2.rutenummer AND  ((DS.startStasjonId >= B2.startStasjonId AND DS.endeStasjonId <= B2.endeStasjonId) OR (DS.startStasjonId <= B2.startStasjonId AND DS.endeStasjonId >= B2.endeStasjonId))
+                        LEFT JOIN Billett B3 ON B3.plassNr = Soveplass.plassNr AND B3.vognId = Soveplass.vognId AND TF.dato = B3.avgangsDato AND TF.rutenummer = B3.rutenummer AND  ((DS.startStasjonId >= B3.startStasjonId AND DS.endeStasjonId <= B3.endeStasjonId) OR (DS.startStasjonId <= B2.startStasjonId AND DS.endeStasjonId >= B2.endeStasjonId))
 
 
                         -- WHERE T.rutenummer = ? AND TF.dato = "2023-04-04"
@@ -90,18 +90,24 @@ def getAvailableSeatsOnRoute(route):
             if(d[3] not in distances[d[0]][d[1]][d[2]]):
                 distances[d[0]][d[1]][d[2]][d[3]] = ""
             if(d[7] == None):
-                distances[d[0]][d[1]][d[2]][d[3]] = str(distances[d[0]][d[1]][d[2]][d[3]])[:-1] + str(d[5]) + str(d[6])
+                if(d[9] == 0):
+                    distances[d[0]][d[1]][d[2]][d[3]] = str(d[6]) + str(d[5]) + distances[d[0]][d[1]][d[2]][d[3]]
+                else: 
+                    distances[d[0]][d[1]][d[2]][d[3]] += str(d[5]) + str(d[6])
         if(d[4] != None):
             if(d[4] not in distances[d[0]][d[1]][d[2]]):
                 distances[d[0]][d[1]][d[2]][d[4]] = ""
             if(d[8] == None):
-                distances[d[0]][d[1]][d[2]][d[4]] = str(distances[d[0]][d[1]][d[2]][d[4]])[:-1] + str(d[5]) + str(d[6])
-            else:
-                i = 0
-                if (d[4]%2 == 0): i = d[4]-1 
-                else: i = d[4]+1
-                print(distances[d[0]][d[1]][d[2]][d[i]])
-                distances[d[0]][d[1]][d[2]][i] = str(distances[d[0]][d[1]][d[2]][d[4]])[:-1]
+                if(d[9] == 0):
+                    distances[d[0]][d[1]][d[2]][d[4]] = str(d[6]) + str(d[5]) + distances[d[0]][d[1]][d[2]][d[4]]
+                else: 
+                    distances[d[0]][d[1]][d[2]][d[4]] += str(d[5]) + str(d[6])
+            # else:
+            #     i = 0
+            #     if (d[4]%2 == 0): i = d[4]-1 
+            #     else: i = d[4]+1
+            #     print(distances[d[0]][d[1]][d[2]][d[i]])
+            #     distances[d[0]][d[1]][d[2]][i] = str(distances[d[0]][d[1]][d[2]][d[4]])[:-1]
 
     counter = 0
     """
@@ -117,7 +123,7 @@ def getAvailableSeatsOnRoute(route):
                 for seat in distances[date][route][wagon]:
                     if(len(str(distances[date][route][wagon][seat])) == 0):
                         counter += 1
-                    print ("\t\t\tSeat: " + str(seat) + " " + str(distances[date][route][wagon][seat]))
+                    print ("\t\t\tSeat: %2s %s " %((str(seat) , str(distances[date][route][wagon][seat]))))
 
     fromStationId = 1
     toStationId = 6
