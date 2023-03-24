@@ -41,7 +41,7 @@ def getAvailableSeatsOnRoute(route, travel):
                         LEFT JOIN Billett B2 ON B2.plassNr = Sitteplass.plassNr AND B2.vognId = Sitteplass.vognId AND TF.dato = B2.avgangsDato AND TF.rutenummer = B2.rutenummer AND  ((DS.startStasjonId >= B2.startStasjonId AND DS.endeStasjonId <= B2.endeStasjonId) OR (DS.startStasjonId <= B2.startStasjonId AND DS.endeStasjonId >= B2.endeStasjonId))
                         LEFT JOIN Billett B3 ON B3.plassNr = Soveplass.plassNr AND B3.vognId = Soveplass.vognId AND TF.dato = B3.avgangsDato AND TF.rutenummer = B3.rutenummer AND  ((DS.startStasjonId >= B3.startStasjonId AND DS.endeStasjonId <= B3.endeStasjonId) OR (DS.startStasjonId <= B2.startStasjonId AND DS.endeStasjonId >= B2.endeStasjonId))
 
-                        WHERE TF.dato = "2023-04-03"
+                        WHERE TF.dato = "2023-04-04"
 
                         ORDER BY TF.dato, T.rutenummer, DS.startStasjonId
                     """)
@@ -103,17 +103,19 @@ def getAvailableSeatsOnRoute(route, travel):
                     distances[d[0]][d[1]][d[2]][d[4]] = str(d[5]) + str(d[6]) + distances[d[0]][d[1]][d[2]][d[4]]
                 else: 
                     distances[d[0]][d[1]][d[2]][d[4]] += str(d[5]) + str(d[6])
-            # else:
-            #     i = 0
-            #     if (d[4]%2 == 0): i = d[4]-1 
-            #     else: i = d[4]+1
-            #     print(distances[d[0]][d[1]][d[2]][d[i]])
-            #     distances[d[0]][d[1]][d[2]][i] = str(distances[d[0]][d[1]][d[2]][d[4]])[:-1]
+            else:
+                i = 0
+                if (d[4]%2 == 0): i = d[4]-1 
+                else: i = d[4]+1
+                print(distances[d[0]][d[1]][d[2]][d[i]])
+                distances[d[0]][d[1]][d[2]][i] = str(distances[d[0]][d[1]][d[2]][d[4]])[:-1]
 
     print(distances)
     counter = 0
     availableSeats = []
     res = {}
+
+
     """
         print distances in a nice way
 
@@ -138,6 +140,11 @@ def getAvailableSeatsOnRoute(route, travel):
                         availableSeats.append([date, route, wagon, seat])
                     # print ("\t\t\tSeat: %2s %s " %((str(seat) , str(distances[date][route][wagon][seat]))))
 
+    fromStationId = travel[0]
+    toStationId = travel[-1]
+
+    print("\nLedige plasser fra stasjon " + str(fromStationId) + " til stasjon " + str(toStationId) + ":\n")
+
     """
         Print available seats on route
     """
@@ -150,25 +157,17 @@ def getAvailableSeatsOnRoute(route, travel):
                 if (len(res[date][route][wagon]) == 0):
                     stopp = True
             if(not stopp):
-                print("\tRute: " + str(route))  
+                print("\t| Rute:" + str(route))  
                 for wagon in res[date][route]:
-                    print("\tVogn: " + str(wagon))
+                    print("\t|\n\t| Vogn: " + str(wagon))
                     if (len(res[date][route][wagon]) > 0):
                         seats = []
                         for seat in res[date][route][wagon]:
                             seats.append(str(seat))
-                        print("\tLedige plasser: " + ", ".join(seats) + "\n")
+                        print("\t| Ledige plasser: " + ", ".join(seats) )
+                print("---------------------------------------------------------------")
 
-    fromStationId = travel[0]
-    toStationId = travel[-1]
-
-    print("\n\nAvailable seats from station: " + str(fromStationId) + " to station: " + str(toStationId) + "\n")
-    print(counter)
-
-    # for seat in availableSeats:
-    #     print("Date: " + str(seat[0]) + " Route: " + str(seat[1]) + " Wagon: " + str(seat[2]) + " Seat: " + str(seat[3]))
-
-    print("\nTotalt antall kjøpte billetter: " + str(counter))
+    print("\nAntall mulige plasser: " + str(counter))
 
 
-getAvailableSeatsOnRoute(2, "456")
+getAvailableSeatsOnRoute(2, "123456")
