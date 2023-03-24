@@ -5,6 +5,8 @@ con = sqlite3.connect('jernbanen.db')
 
 """
     Henter alle billettene for en kunde
+
+    @param kundeNummer: kundenummeret til kunden
 """
 def getTickets(kundeNummer):
     cur = con.cursor()
@@ -34,6 +36,8 @@ def getTickets(kundeNummer):
 
 """
     Konverterer data fra databasen til en dict
+
+    @param data: data fra databasen
 """
 def dataToDict(data):
     dict = []
@@ -59,6 +63,8 @@ def dataToDict(data):
 
 """
     Printer ut alle kommende billetter for en kunde
+
+    @param dict: dict med data fra databasen
 """
 def printData(dict):
     if len(dict) == 0:
