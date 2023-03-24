@@ -3,6 +3,9 @@ import datetime
 
 con = sqlite3.connect('jernbanen.db')
 
+"""
+    Henter alle billettene for en kunde
+"""
 def getTickets(kundeNummer):
     cur = con.cursor()
     res = cur.execute("""
@@ -29,6 +32,9 @@ def getTickets(kundeNummer):
     
     return res.fetchall()
 
+"""
+    Konverterer data fra databasen til en dict
+"""
 def dataToDict(data):
     dict = []
     for row in data:
@@ -51,6 +57,9 @@ def dataToDict(data):
 
     return dict
 
+"""
+    Printer ut alle kommende billetter for en kunde
+"""
 def printData(dict):
     if len(dict) == 0:
         print("Ingen reiser funnet for kunde\n")
@@ -80,6 +89,10 @@ def printData(dict):
             \r---------------------------------
             """ %(ticket["Vogn-rekkefølge"], ticket["plassNr"]))
 
+
+"""
+    Henter ut alle brukere i databasen
+"""
 def getUsers():
     cur = con.cursor()
     res = cur.execute("""
