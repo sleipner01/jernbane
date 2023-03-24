@@ -136,8 +136,8 @@ CREATE TABLE IF NOT EXISTS Kunde (
     kundenummer INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     fornavn varchar(60) NOT NULL,
     etternavn varchar(60) NOT NULL,
-    email varchar(60) NOT NULL,
-    tlfNr varchar(20) NOT NULL
+    email varchar(60) UNIQUE NOT NULL,
+    tlfNr varchar(20) UNIQUE NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS Kundeordre (

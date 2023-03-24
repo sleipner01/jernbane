@@ -13,11 +13,13 @@ def registerUser():
     etternavn = input("Etternavn: ")
     email = input("Email: ")
     tlfNr = input("Telefonnummer (8 siffer): ")
-    cur.execute("INSERT INTO Kunde (fornavn, etternavn, email, tlfNr) VALUES (?, ?, ?, ?)", (fornavn, etternavn, email, tlfNr))
+    try:
+        cur.execute("INSERT INTO Kunde (fornavn, etternavn, email, tlfNr) VALUES (?, ?, ?, ?)", (fornavn, etternavn, email, tlfNr))
+        getNewlyRegisteredUser()
+    except:
+        print("Noe gikk galt, en bruker må ha unik epost og telefonnummer")
+    
     con.commit()
-
-    getNewlyRegisteredUser()
-
 """
 Henter den nyregistrerte brukeren fra databasen
 """
