@@ -2,28 +2,7 @@ import sqlite3
 
 con = sqlite3.connect("jernbanen.db")
 
-## Denne funker!
-#  SELECT TF.dato, T.rutenummer, DS.startStasjonId, DS.endeStasjonId, V.vognId as "VognID", SitteVogn.vognId as "Sittevogn ID",  B.vognId as "Billett vognID", B.ordrenummer, Sitteplass.plassNr, Soveplass.plassNr, B2.plassNr, B3.plassNr FROM Togrute T
-# -- SELECT * FROM Togrute T
-# JOIN TogruteHarDelstrekning DS ON T.rutenummer = DS.rutenummer
-# JOIN Togruteforekomst TF ON TF.rutenummer = T.rutenummer
-# JOIN Billett B ON (B.avgangsDato = TF.dato AND T.rutenummer = B.rutenummer)
-# JOIN VognOppsett VO ON VO.vognOppsettId = T.vognOppsettId
-# JOIN VognerPaaVognOppsett VPVO ON VPVO.vognOppsettId = VO.vognOppsettId AND T.vognOppsettId = VO.vognOppsettId
-# JOIN Vogn V ON V.vognId = VPVO.vognId
-# LEFT  JOIN SitteVogn ON SitteVogn.vognId = V.vognId
-# LEFT JOIN SoveVogn ON SoveVogn.vognId = V.vognId
-# LEFT JOIN Plass Sitteplass ON Sitteplass.vognId = SitteVogn.vognId 
-# LEFT JOIN Plass Soveplass ON Soveplass.vognId = SoveVogn.vognId
-# LEFT JOIN Billett B2 ON B2.plassNr = Sitteplass.plassNr AND B2.vognId = Sitteplass.vognId
-# LEFT JOIN Billett B3 ON B3.plassNr = Soveplass.plassNr AND B3.vognId = Soveplass.vognId
-
-
-# WHERE T.rutenummer = 2 AND TF.dato = "2023-04-04"
-
-# ORDER BY TF.dato, T.rutenummer, DS.startStasjonId
-
-def getAvailableSeatsOnRoute(route, travel):
+def getAvailableSeatsOnRoute(route, travel, departure, arrival):
 
     cur = con.cursor()
     res = cur.execute("""
@@ -41,11 +20,10 @@ def getAvailableSeatsOnRoute(route, travel):
                         LEFT JOIN Billett B2 ON B2.plassNr = Sitteplass.plassNr AND B2.vognId = Sitteplass.vognId AND TF.dato = B2.avgangsDato AND TF.rutenummer = B2.rutenummer AND  ((DS.startStasjonId >= B2.startStasjonId AND DS.endeStasjonId <= B2.endeStasjonId) OR (DS.startStasjonId <= B2.startStasjonId AND DS.endeStasjonId >= B2.endeStasjonId))
                         LEFT JOIN Billett B3 ON B3.plassNr = Soveplass.plassNr AND B3.vognId = Soveplass.vognId AND TF.dato = B3.avgangsDato AND TF.rutenummer = B3.rutenummer AND  ((DS.startStasjonId >= B3.startStasjonId AND DS.endeStasjonId <= B3.endeStasjonId) OR (DS.startStasjonId <= B2.startStasjonId AND DS.endeStasjonId >= B2.endeStasjonId))
 
-                        WHERE TF.dato = "2023-04-04"
+                        -- WHERE TF.dato = "2023-04-04"
 
                         ORDER BY TF.dato, T.rutenummer, DS.startStasjonId
                     """)
-    # , (str(route)))
     
     distances = {}
 
@@ -107,14 +85,14 @@ def getAvailableSeatsOnRoute(route, travel):
                 i = 0
                 if (d[4]%2 == 0): i = d[4]-1 
                 else: i = d[4]+1
-                print(distances[d[0]][d[1]][d[2]][d[i]])
                 distances[d[0]][d[1]][d[2]][i] = str(distances[d[0]][d[1]][d[2]][d[4]])[:-1]
 
-    print(distances)
+
+
+
     counter = 0
     availableSeats = []
     res = {}
-
 
     """
         print distances in a nice way
@@ -123,27 +101,19 @@ def getAvailableSeatsOnRoute(route, travel):
     for date in distances:
         if (date not in res):
             res[date] = {}
-        # print ("Date: " + date)
         for route in distances[date]:
             if (route not in res[date]):
                 res[date][route] = {}
-            # print ("\tRoute: " + str(route))
             for wagon in distances[date][route]:
                 if (wagon not in res[date][route]):
                     res[date][route][wagon] = []
-                # print ("\t\tWagon: " + str(wagon))
                 for seat in distances[date][route][wagon]:
                     if(travel in ("".join(dict.fromkeys(str(distances[date][route][wagon][seat]))))):
-                        # res[date][route][wagon] = res[date][route][wagon] + ", " + str(seat)
                         res[date][route][wagon].append(str(seat))
                         counter += 1
                         availableSeats.append([date, route, wagon, seat])
-                    # print ("\t\t\tSeat: %2s %s " %((str(seat) , str(distances[date][route][wagon][seat]))))
 
-    fromStationId = travel[0]
-    toStationId = travel[-1]
-
-    print("\nLedige plasser fra stasjon " + str(fromStationId) + " til stasjon " + str(toStationId) + ":\n")
+    print("\nLedige plasser fra stasjon " + departure + " til stasjon " + arrival + ":\n")
 
     """
         Print available seats on route
@@ -169,5 +139,65 @@ def getAvailableSeatsOnRoute(route, travel):
 
     print("\nAntall mulige plasser: " + str(counter))
 
+"""
+    Get all stations from database for help before user input
+"""
+def getAllStations():
+        
+        cur = con.cursor()
+        stations = {}
+        res = cur.execute("SELECT navn, stasjonId FROM Jernbanestasjon")
+        for d in res:
+            stations[d[0].lower()] = d[1]
+        return stations
 
-getAvailableSeatsOnRoute(2, "123456")
+def main():
+
+    stations = getAllStations()
+
+    print("Velkommen til Jernbanesystemet!\n")
+    print("Skriv inn q for å avslutte programmet.\n")
+    print("Stasjoner:\n")
+    for station in stations:
+        print(str(station))
+
+    res = ""
+
+    while res != "q":
+        res = input("\nSkriv inn en reise for å finne ledige plasser, skriv inn startstasjon og endestasjon sepparert med komma: ").strip()
+        if(res == "q"):
+            break
+        travels = res.split(",")
+        if(len(travels) != 2):
+            print("Feil input, prøv igjen.")
+            continue
+
+        departure = travels[0].strip().lower()
+        arrival = travels[1].strip().lower()
+
+        departureInt = stations[departure]
+        arrivalInt = stations[arrival]
+
+        travelString = ""
+        if(departureInt > arrivalInt):
+            for i in range(departureInt, arrivalInt-1, -1):
+                travelString += str(i)
+        else:
+            for i in range(departureInt, arrivalInt+1):
+                travelString += str(i)
+
+        print(travelString)
+
+        getAvailableSeatsOnRoute(2, travelString, departure, arrival)
+
+        input("Ønsker du å kjøpe billett? Trykk enter for å fortsette, skriv q for å avslutte: ")
+
+        if(res == "q"):
+            break
+
+
+
+
+
+main()
+con.close()
