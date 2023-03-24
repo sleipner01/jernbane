@@ -92,7 +92,6 @@ def getAvailableSeatsOnRoute(travel):
 
 
     counter = 0
-    availableSeats = []
     res = {}
 
     """
@@ -113,7 +112,7 @@ def getAvailableSeatsOnRoute(travel):
                     if(travel in ("".join(dict.fromkeys(str(distances[date][route][wagon][seat]))))):
                         res[date][route][wagon].append(str(seat))
                         counter += 1
-                        availableSeats.append([date, route, wagon, seat])
+
     return res
 
 def printAvailableSeats(data, departure, arrival):
@@ -174,7 +173,7 @@ def getUsers():
         tmp["etternavn"] = user[2]
         users.append(tmp)
 
-    print("Registrerte kunder:\n")
+    print("\nRegistrerte kunder:\n")
     print("Kundenummer\t| Fornavn \t| Etternavn")
     print("--------------------------------------------------")
     for user in users:
@@ -215,7 +214,6 @@ def buyTicket(orderId, routeNumber, date, wagonId, departureInt, arrivalInt, sea
     except:
         print("Kunne ikke kjøpe billett, prøv igjen.")
         return False
-
 def main():
 
     stations = getAllStations()
@@ -227,6 +225,21 @@ def main():
         print(str(station))
 
     res = ""
+
+    getUsers()
+
+    customerId = input("Skriv inn ditt kundenummer: ").strip()
+
+    if(customerId.isdigit()):
+        customerId = int(customerId)
+    elif(customerId == "q"):
+        res = "q"
+    else:
+        print("Kundenummer må være et tall.")
+        res = "q"
+
+    orderId = createOrder(customerId)
+
 
     while res != "q":
         res = input("\nSkriv inn en reise for å finne ledige plasser, skriv inn startstasjon og endestasjon sepparert med komma: ").strip()
@@ -256,41 +269,29 @@ def main():
         availableSeats = getAvailableSeatsOnRoute(travelString)
         printAvailableSeats(availableSeats, departure, arrival)
 
+        res = input("Ønsker du å kjøpe billett? Trykk enter for å fortsette, skriv q for å avslutte: ")
+
+        if(res == "q"):
+            break
+
+        # res = input("Ønsker du å kjøpe billett? Trykk enter for å fortsette, skriv q for å avslutte: ")
 
         while res != "q":
             availableSeats = getAvailableSeatsOnRoute(travelString)
-            res = input("Ønsker du å kjøpe billett? Trykk enter for å fortsette, skriv q for å avslutte: ")
-
-            if(res == "q"):
-                break
-
-            getUsers()
-
-            customerId = input("Skriv inn ditt kundenummer: ").strip()
-            if(customerId == "q"):
-                break
-
-            if(customerId.isdigit()):
-                customerId = int(customerId)
-            else:
-                print("Kundenummer må være et tall.")
-                continue
-
 
             routeNumber = input("Skriv inn rutenummer for reisen: ").strip()
             if(routeNumber == "q"):
                 break
-
             if(routeNumber.isdigit()):
                 routeNumber = int(routeNumber)
             else:
                 print("Rutenummer må være et tall.")
                 continue
 
+
             date = input("Skriv inn dato for reisen på format (yyyy-mm-dd): ").strip()
             if(date == "q"):
                 break
-
             if(len(date) != 10):
                 print("Dato må være på formatet (yyyy-mm-dd)")
                 continue
@@ -299,44 +300,57 @@ def main():
             wagonId = input("Skriv inn vognnummer for reisen: ").strip()
             if(wagonId == "q"):
                 break
-
             if(wagonId.isdigit()):
                 wagonId = int(wagonId)
             else:
                 print("Vognnummer må være et tall.")
                 continue
 
+
             seatNumber = input("Skriv inn plassnummer for reisen: ").strip()
             if(seatNumber == "q"):
                 break
-
             if(seatNumber.isdigit()):
                 seatNumber = int(seatNumber)
             else:
                 print("Plassnummer må være et tall.")
                 continue
 
-            orderId = createOrder(customerId)
-
+            occupiedSeats = []
 
             if(str(seatNumber) in availableSeats[date][routeNumber][wagonId]):
+                occupiedSeats.append(seatNumber)
                 validBuy = buyTicket(orderId, routeNumber, date, wagonId, departureInt, arrivalInt, seatNumber)
                 if(validBuy): 
                     print("Billett kjøpt!")
 
-                    newTicket = input("Ønsker du å kjøpe flere billetter? Trykk enter for å fortsette, skriv q for å avslutte: ")
+                    while res != "q":
+                        res = input("Ønsker du å legge til en ny billett i samme vogn? Trykk enter for å fortsette, skriv q for å avslutte: ")
+                        if(res == "q"):
+                            break
 
-                    # if(newTicket == "q"):
-                    #     break
-
-                    # newSeat = input("Skriv inn plassnummer for det nye setet: ").strip()
-                    # if(newSeat == "q"):
-                    #     break
-
+                        seatNumber = input("Skriv inn plassnummer: ").strip()
+                        if(seatNumber == "q"):
+                            break
+                        if(seatNumber.isdigit()):
+                            seatNumber = int(seatNumber)
+                        else:
+                            print("Plassnummer må være et tall.")
+                            continue
+                        if(str(seatNumber) in availableSeats[date][routeNumber][wagonId] and seatNumber not in occupiedSeats):
+                            occupiedSeats.append(seatNumber)
+                            buyTicket(orderId, routeNumber, date, wagonId, departureInt, arrivalInt, seatNumber)
+                        else:
+                            print("Plassen er ikke ledig, prøv igjen.")
+                            continue
 
             else: 
                 print("Plassen er ikke ledig, prøv igjen.")
                 continue
 
+
+            res = input("Ønsker du å kjøpe ny billett? Trykk enter for å fortsette, skriv q for å avslutte: ")
+
+    print("programmet avsluttes")
 main()
 con.close()
