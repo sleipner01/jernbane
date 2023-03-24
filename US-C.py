@@ -2,6 +2,9 @@ import sqlite3
 
 con = sqlite3.connect('jernbanen.db')
 
+"""
+Henter alle stasjonene fra databasen
+"""
 def getStations():
     stations = con.cursor().execute("SELECT navn FROM Jernbanestasjon").fetchall()
     res = []
@@ -9,7 +12,9 @@ def getStations():
         res.append(station[0])
     return res
 
-
+"""
+Henter alle ruter som går fra en stasjon på en gitt dag
+"""
 def getTrainsPerDayPerStation(date, station):
     routeInfo = []
     
@@ -36,7 +41,9 @@ def getTrainsPerDayPerStation(date, station):
 
     return routeInfo
 
-
+"""
+Printer ut ruter med stasjon og dato
+"""
 def printResult(res, date, station):
     values = []
     for value in res:
@@ -52,6 +59,11 @@ def printResult(res, date, station):
         print(value)
 
 
+"""
+Konverterer ukedag til en dato i April 2023  
+
+@:param day: En streng med de første 3 bokstavene i en ukedag som skal konverteres
+"""
 def dayToDate(day):
     dayConverter = {
         "man": "2023-04-03",

@@ -1,5 +1,12 @@
 import sqlite3
 
+
+"""
+Kjører sql-scriptet i filen som blir gitt som parameter.
+Skriptet kjøres opp mot jernbanen.db databasen.
+
+@:param filename: navnet på filen som inneholder sql-scriptet
+"""
 def runFile(filename):
     with open(filename, 'r') as sql_file:
         sql_script = sql_file.read()
