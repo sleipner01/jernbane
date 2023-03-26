@@ -30,7 +30,11 @@ def getTickets(kundeNummer):
                 WHERE K.kundenummer = ? AND avgangsDato > ?
                 ORDER BY avgangsDato, S1.avgangsTid ASC
 
-                """, (str(kundeNummer) , str(datetime.datetime.now())))
+                """, (str(kundeNummer) , "2023-04-01 12:00:00"))
+    
+                # Datoen er satt til 1. april 2023 for å sikre at data ikke blir filtrert bort
+                # siden databasen ikke har noe data etter 9.april 2023
+                # Burde ideelt sett blitt brukt str(Date.now())
     
     return res.fetchall()
 
@@ -124,7 +128,6 @@ def getUsers():
     print("Skriv q for å avslutte programmet\n")
 
 
-# TODO Legge til type billett, sove eller sitteplass
 def main():
     getUsers()
     res = ""

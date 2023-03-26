@@ -3,6 +3,11 @@ import sqlite3
 
 con = sqlite3.connect("jernbanen.db")
 
+
+"""
+    Gets all subroutes for a route, checks if there are any tickets for the subroutes, and returns the available seats for the route
+    @param travel: the travel to get available seats for as string in format "123456" where the numbers is each station in the route
+"""
 def getAvailableSeatsOnRoute(travel):
 
     cur = con.cursor()
@@ -25,36 +30,29 @@ def getAvailableSeatsOnRoute(travel):
 
                         ORDER BY TF.dato, T.rutenummer, DS.startStasjonId
                     """) 
-    
+
+                    # Idially, the WHERE clause should be: 
+                    # WHERE TF.dato > ? and ? = datetime.now()
+                    # But due to the fact that the database isnn´t complete with data, we have to use a hardcoded date.
     distances = {}
 
     """
-    Data structure:
+    Reads SQL response and crates a data structure on format:
 
-        Date:
-            Route:
-                Wagon:
-                    Seat: "Stations not booked"
-
-
-    {
-        "2023-04-04": {
-            "2": {
-                "3": {
-                    "1": "122344556",
-                    "2": "122344556",
-                    "3": "1223",
-                    "4": ""
-                    },
-                "4": {
-                    "1": "122344556",  
-                    "2": "122344556",
-                    "3": "1223",
-                    "4": ""
-                    }
+    distances = {
+        date: {
+            route: {
+                wagon: {
+                    seatNumber: "123456" (available section)
+                    ...
+                    wagontype: 0/1
                 }
+                ...
             }
+            ...
         }
+        ...
+    }
     """
     
     for d in res:
@@ -67,7 +65,7 @@ def getAvailableSeatsOnRoute(travel):
         if(d[3] != None):
             if(d[3] not in distances[d[0]][d[1]][d[2]]):
                 distances[d[0]][d[1]][d[2]][d[3]] = ""
-                distances[d[0]][d[1]][d[2]]["vogntype"] = d[10]
+                distances[d[0]][d[1]][d[2]]["wagontype"] = d[10]
             if(d[7] == None):
                 if(d[9] == 0):
                     distances[d[0]][d[1]][d[2]][d[3]] = str(d[5]) + str(d[6]) + distances[d[0]][d[1]][d[2]][d[3]]
@@ -76,7 +74,7 @@ def getAvailableSeatsOnRoute(travel):
         if(d[4] != None):
             if(d[4] not in distances[d[0]][d[1]][d[2]]):
                 distances[d[0]][d[1]][d[2]][d[4]] = ""
-                distances[d[0]][d[1]][d[2]]["vogntype"] = d[10] 
+                distances[d[0]][d[1]][d[2]]["wagontype"] = d[10] 
             if(d[8] == None):
                 if(d[9] == 0):
                     distances[d[0]][d[1]][d[2]][d[4]] = str(d[5]) + str(d[6]) + distances[d[0]][d[1]][d[2]][d[4]]
@@ -88,15 +86,27 @@ def getAvailableSeatsOnRoute(travel):
                 else: i = d[4]+1
                 distances[d[0]][d[1]][d[2]][i] = str(distances[d[0]][d[1]][d[2]][d[4]])[:-1]
 
-
-
-
     counter = 0
     res = {}
 
     """
 
-        Find available seats on route on given date
+        Find available seats on route on given date.
+        If seat is available, add it to res.
+
+        data = {
+            date: {
+                route: {
+                    wagon: {
+                        seats: [seat1, seat2, ...]
+                        wagontype: 0/1
+                    }
+                    ...
+                }
+                ...
+            }
+            ...
+        }
 
     """
     for date in distances:
@@ -107,17 +117,24 @@ def getAvailableSeatsOnRoute(travel):
                 res[date][route] = {}
             for wagon in distances[date][route]:
                 if (wagon not in res[date][route]):
-                    res[date][route][wagon] = []
+                    res[date][route][wagon] = {}
+                    res[date][route][wagon]["seats"] = []
                 for seat in distances[date][route][wagon]:
+                    if (seat not in res[date][route][wagon]["seats"]):
+                        res[date][route][wagon]["wagontype"] = distances[date][route][wagon]["wagontype"]
                     if(travel in ("".join(dict.fromkeys(str(distances[date][route][wagon][seat]))))):
-                        res[date][route][wagon].append(str(seat))
+                        res[date][route][wagon]["seats"].append(str(seat))
                         counter += 1
+    
+    print("\nTilgejengelige plasser: " + str(counter))
 
     return res
 
+
+
 def printAvailableSeats(data, departure, arrival):
 
-    print("\nLedige plasser fra stasjon " + departure + " til stasjon " + arrival + ":\n")
+    print("\nLedige plasser fra " + departure + " til " + arrival + ":\n")
 
     """
         Print available seats on route
@@ -128,17 +145,24 @@ def printAvailableSeats(data, departure, arrival):
         for route in data[date]:
             stopp = False
             for wagon in data[date][route]:
-                if (len(data[date][route][wagon]) == 0):
+                if (len(data[date][route][wagon]["seats"]) == 0):
                     stopp = True
             if(not stopp):
                 print("\t| Rute:" + str(route))  
                 for wagon in data[date][route]:
-                    print("\t|\n\t| Vogn: " + str(wagon))
-                    if (len(data[date][route][wagon]) > 0):
+                    if(data[date][route][wagon]["wagontype"] == 1):
+                        print("\t|\n\t| Sovevogn: " + str(wagon))
+                        plasstype = "sengeplasser: "
+                    else:
+                        print("\t|\n\t| Sittevogn: " + str(wagon))
+                        plasstype = "seter: "
+
+                    # print("\t|\n\t| Vogn: " + str(wagon))
+                    if (len(data[date][route][wagon]["seats"]) > 0):
                         seats = []
-                        for seat in data[date][route][wagon]:
+                        for seat in data[date][route][wagon]["seats"]:
                             seats.append(str(seat))
-                        print("\t| Ledige plasser: " + ", ".join(seats) )
+                        print("\t| Ledige " + plasstype + ": " + ", ".join(seats) )
                 print("---------------------------------------------------------------")
 
 
@@ -150,10 +174,19 @@ def getAllStations():
         cur = con.cursor()
         stations = {}
         res = cur.execute("SELECT navn, stasjonId FROM Jernbanestasjon")
+        print("|-----------|")
+        print("| Stasjoner |")
+        print("|-----------|")
         for d in res:
             stations[d[0].lower()] = d[1]
+            print("| %9s |" % d[0])
+        print("|-----------|")
         return stations
 
+
+"""
+    Get all users from database for help before user input, prints all users in a table
+"""
 def getUsers():
     cur = con.cursor()
     res = cur.execute("""
@@ -174,16 +207,20 @@ def getUsers():
         users.append(tmp)
 
     print("\nRegistrerte kunder:\n")
-    print("Kundenummer\t| Fornavn \t| Etternavn")
+    print("--------------------------------------------------")
+    print("Kundenummer:\t| Fornavn: \t| Etternavn:  \t")
     print("--------------------------------------------------")
     for user in users:
-        print("%s \t\t| %s\t\t| %s" %(user["kundenummer"], user["fornavn"], user["etternavn"]))
+        print("| %s \t\t| %s\t\t| %s \t " %(user["kundenummer"], user["fornavn"], user["etternavn"]))
     print("--------------------------------------------------")
     print(" ")
     print("Skriv q for å avslutte programmet\n")
 
     return userIds
 
+"""
+    Creates a new order in database, and returns the order id
+"""
 def createOrder(customerId):
     cur = con.cursor()
     cur.execute("""
@@ -200,6 +237,9 @@ def createOrder(customerId):
 
     return orderID
 
+"""
+    Insert ticket into database
+"""
 def buyTicket(orderId, routeNumber, date, wagonId, departureInt, arrivalInt, seatNumber):
 
     cur = con.cursor()
@@ -214,15 +254,15 @@ def buyTicket(orderId, routeNumber, date, wagonId, departureInt, arrivalInt, sea
     except:
         print("Kunne ikke kjøpe billett, prøv igjen.")
         return False
-def main():
 
-    stations = getAllStations()
+"""
+    Main function
+"""  
+def main():
 
     print("Velkommen til Jernbanesystemet!\n")
     print("Skriv inn q for å avslutte programmet.\n")
-    print("Stasjoner:\n")
-    for station in stations:
-        print(str(station))
+    stations = getAllStations()
 
     res = ""
 
@@ -264,8 +304,6 @@ def main():
             for i in range(departureInt, arrivalInt+1):
                 travelString += str(i)
 
-        print(travelString)
-
         availableSeats = getAvailableSeatsOnRoute(travelString)
         printAvailableSeats(availableSeats, departure, arrival)
 
@@ -273,8 +311,6 @@ def main():
 
         if(res == "q"):
             break
-
-        # res = input("Ønsker du å kjøpe billett? Trykk enter for å fortsette, skriv q for å avslutte: ")
 
         while res != "q":
             availableSeats = getAvailableSeatsOnRoute(travelString)
@@ -319,7 +355,7 @@ def main():
             occupiedSeats = []
 
             try:
-                if(str(seatNumber) in availableSeats[date][routeNumber][wagonId]):
+                if(str(seatNumber) in availableSeats[date][routeNumber][wagonId]["seats"]):
                     occupiedSeats.append(seatNumber)
                     validBuy = buyTicket(orderId, routeNumber, date, wagonId, departureInt, arrivalInt, seatNumber)
                     if(validBuy): 
@@ -338,7 +374,7 @@ def main():
                             else:
                                 print("Plassnummer må være et tall.")
                                 continue
-                            if(str(seatNumber) in availableSeats[date][routeNumber][wagonId] and seatNumber not in occupiedSeats):
+                            if(str(seatNumber) in availableSeats[date][routeNumber][wagonId]["seats"] and seatNumber not in occupiedSeats):
                                 occupiedSeats.append(seatNumber)
                                 buyTicket(orderId, routeNumber, date, wagonId, departureInt, arrivalInt, seatNumber)
                             else:
@@ -355,5 +391,7 @@ def main():
             res = input("Ønsker du å kjøpe ny billett? Trykk enter for å fortsette, skriv q for å avslutte: ")
 
     print("programmet avsluttes")
+
 main()
+
 con.close()
