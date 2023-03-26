@@ -19,5 +19,5 @@ def runFile(filename):
 
 runFile("dropTables.sql") # for å slette databasen
 runFile('jernbane.sql') # for å lage databasen
-runFile('eksempelData.sql')
+runFile('eksempelData.sql') # for å legge inn eksempeldata
 
