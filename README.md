@@ -23,3 +23,22 @@ Eksempeldata brukt for å løse oppgavene er lagt i `eksempelData.sql`. Dette er
 ## Kjøring av sql filer
 
 `runFile.py`er lagt til for å kjøre scriptene fra .sql-filene. Per nå brukes dette for å slette eventuel nåværende data i databasen, opprette alle tabeller og legge til eksempeldataen fra fil.
+
+## Verdier
+ - Delstrekning:
+   - `sportype`
+     - `BOOLEAN`
+       - 0: Enkeltspor
+       - 1: Dobbeltspor
+
+   - Togrute:
+     - `hovedretning`
+       - `BOOLEAN`
+         - 0: Mot hovedretning
+         - 1: Hovedretning  
+
+  - Vogn
+    - `type`
+      - `BOOLEAN`
+        - 0: Setevogn
+        - 1: Sovevogn
