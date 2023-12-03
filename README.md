@@ -2,7 +2,7 @@
 
 ## Forfattere
 
-Magnus Byrkjeland, Johannes Meldal og Magnus Ouren
+[Magnus Byrkjeland](https://github.com/sleipner01), [Johannes Meldal](https://github.com/johannesmeldal) og [Magnus Ouren](https://github.com/magnusouren)
 
 ## Oppgavebesvarelser
 
